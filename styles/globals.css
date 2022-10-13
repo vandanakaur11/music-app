@@ -1,0 +1,202 @@
+:root {
+    --base-color: #f9fafe;
+    /* --bg-transparent: linear-gradient(180deg, #4a2d4d, #171a1a, #171a1a); */
+    /* --bg-drawer: linear-gradient(180deg, #171a1a, #171a1a, #4a2d4d); */
+    --bg-dark: #281e09;
+    --bg-transparent: linear-gradient(#382b11, #382b11, #000);
+    --bg-drawer: linear-gradient(180deg, #000, #382b11);
+    --primary-color: #ffff;
+    --secondary-color: #dddd;
+    /* --button-color: #5e77fb; */
+    --button-color: #876727f7;
+    --dark-color: #ccaa6b;
+}
+
+@font-face {
+    font-family: "script-mt";
+    src: url("/fonts/SCRIPTBL.ttf");
+}
+
+html,
+body {
+    scroll-behavior: smooth;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+        sans-serif;
+}
+/* width */
+body::-webkit-scrollbar {
+    width: 12px;
+    background-color: black;
+}
+
+/* Track */
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: black;
+}
+
+/* Handle */
+body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #876727f7;
+}
+
+/* Handle on hover */
+/* body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+} */
+
+ul li {
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+.css-1ab2xsx {
+    background-color: #ccaa6b !important;
+}
+
+.css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+    background-color: #ccaa6b !important;
+    width: 25vw !important;
+}
+.rhap_time {
+    color: white!important;
+}
+.rhap_progress-filled{
+    background-color: #3f51b5!important;
+    border-radius: 1px!important;
+    
+}
+.rhap_progress-indicator{
+    background-color: #3f51b5!important;
+}
+.rhap_download-progress{
+    background-color: #3f51b5!important;
+}
+.rhap_play-pause-button{
+    background-color: #3f51b5!important;
+    border-radius: 100%;
+}
+.rhap_volume-bar{
+    background-color: #3f51b5!important;
+}
+.rhap_volume-indicator{
+    background-color: white!important;
+}
+@media(max-width: 540px){
+    .rhap_repeat-button{
+        display: none;
+    }
+    .rhap_volume-button{
+        display: none;
+    }
+    .rhap_volume-container{
+        display: none;
+    }
+    .rhap_volume-bar{
+        display: none;
+    }
+}
+@media (max-width: 1800px) {
+    .css-1ab2xsx {
+        width: 25vw;
+    }
+}
+@media (max-width: 1500px) {
+    .css-1ab2xsx {
+        width: 35vw;
+    }
+}
+@media (max-width: 1300px) {
+    .css-1ab2xsx {
+        width: 40vw;
+    }
+}
+@media (max-width: 1200px) {
+    .css-1ab2xsx {
+        width: 45vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .css-1ab2xsx {
+        width: 50vw;
+    }
+}
+@media (max-width: 700px) {
+    .css-1ab2xsx {
+        width: 55vw;
+    }
+}
+@media (max-width: 600px) {
+    .css-1ab2xsx {
+        width: 65vw;
+    }
+}
+@media (max-width: 500px) {
+    .css-1ab2xsx {
+        width: 80vw;
+    }
+}
+@media (max-width: 400px) {
+    .css-1ab2xsx {
+        width: 90vw;
+    }
+}
+@media (max-width: 1400px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 30vw !important;
+    }
+}
+@media (max-width: 1300px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 35vw !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 45vw !important;
+    }
+}
+
+@media (max-width: 800px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 50vw !important;
+    }
+}
+@media (max-width: 700px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 55vw !important;
+    }
+}
+@media (max-width: 600px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 65vw !important;
+    }
+}
+@media (max-width: 500px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 80vw !important;
+    }
+}
+@media (max-width: 400px) {
+    .css-1160xiw-MuiPaper-root-MuiDrawer-paper {
+        width: 90vw !important;
+    }
+}

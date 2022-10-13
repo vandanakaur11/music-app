@@ -1,0 +1,99 @@
+.auth {
+  padding: calc(2.5vw + 20px);
+  width: clamp(300px, 75%, 800px);
+  /* background: #171a1a; */
+  /* background: #111; */
+  background: #0f0b04;
+  box-shadow: 2px 6px 20px 8px #382b11;
+  text-align: center;
+  color: var(--primary-color);
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-bottom: 5vw;
+}
+
+.auth h1 {
+  font-size: 3rem;
+  font-weight: 500;
+  margin-bottom: 3rem;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+}
+
+.input label {
+  align-self: flex-start;
+  margin: 1rem 0;
+  font-size: 1.2rem;
+}
+
+.input input {
+  border-radius: 10px;
+  padding: 1.4rem;
+  border: none;
+  outline: 2px solid transparent;
+  font-size: 1.1rem;
+  /* background: rgba(29, 35, 35, 1); */
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--primary-color);
+  transition: 0.3s ease;
+}
+
+.input input:focus {
+  outline: 2px solid #382b11;
+}
+
+.auth button,
+.auth button:hover {
+  padding: 1rem;
+  margin: 3rem 0;
+  width: 100%;
+  text-transform: capitalize;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  background: var(--button-color);
+  color: var(--primary-color);
+}
+
+.auth p span {
+  margin: 0 0.5rem;
+}
+
+.auth p {
+  margin: 0 0.5rem;
+}
+
+.auth span {
+  cursor: pointer;
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+.auth > span {
+  display: block;
+  margin: 1rem;
+}
+
+.linkBoxWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .linkBoxWrapper {
+    flex-direction: column;
+  }
+
+  .auth p span {
+    margin: 0.5rem;
+  }
+
+  .auth {
+    width: clamp(300px, 90%, 800px);
+    margin: 5vw auto;
+  }
+}

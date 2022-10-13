@@ -1,0 +1,6 @@
+.layout {
+  background: var(--bg-transparent);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

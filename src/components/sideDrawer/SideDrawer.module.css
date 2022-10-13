@@ -1,0 +1,44 @@
+.playlistWrap {
+  display: flex;
+}
+
+.playlistWrap div {
+  margin: 0px 6px;
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.playlistTextInner {
+  color: #fff !important;
+  margin: 10px 0px;
+}
+
+.playlistInnerWrap {
+  padding: 0px 2vw;
+}
+
+.innerWrapInner {
+  display: flex;
+
+  background-color: #382b11;
+  border-radius: 4px;
+  width: 100%;
+  flex-direction: row;
+  margin: 5px 0px;
+}
+
+.innerWrapname {
+  display: flex;
+}
+
+.playlistDrawerHeading {
+  text-align: center;
+  color: #382b11;
+  margin: 20px 0px;
+}
+
+@media (max-width: 991px) {
+  .playlistText {
+    display: none;
+  }
+}

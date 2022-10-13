@@ -1,0 +1,18 @@
+.banner {
+  margin: 2rem calc(1vw);
+}
+
+.banner h2 {
+  font-size: 1.4rem;
+  margin-left: 1.5rem;
+}
+
+.bannerCarousel {
+  display: flex;
+  overflow-x: scroll;
+  /* width: clamp(300px, 100%, 1800px); */
+}
+
+.bannerCarousel::-webkit-scrollbar {
+  display: none;
+}

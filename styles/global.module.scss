@@ -1,0 +1,65 @@
+
+
+
+.music{
+    position: fixed;
+    width: 100%;
+    max-height: 12%;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    border-radius: 50px 50px 0px 0px;
+    background-color: black;
+    box-shadow: 2px 0px 12px 8px #382b11;
+    padding-left: 5%;
+    padding-right: 5%;
+    .player{
+        // width: 60%;
+        background-color: black;
+        width: 60%;
+    }
+    img{
+        margin-top: 10px;
+        margin-right: 4px;
+        height: 70px;
+        border-radius: 70%;
+    }
+    .infoDiv{
+        // display: flex;
+        padding-top: 20px;
+        padding-bottom: 5px;
+        flex-wrap: wrap;
+        // border: 2px solid red;
+        .Album_Name{
+            font-size: 16px!important;
+            font-weight: bold!important;
+        }
+
+
+    }
+}
+
+@media (max-width: 680px){
+    .music{
+        img{
+            display: none;
+        }
+    }
+    
+}
+@media (max-width: 540px){
+    .music{
+        justify-content: center;
+        .infoDiv{
+            display: none;
+        }
+        .player{
+            background-color: #382b1100;
+        }
+        .trash{
+            display: none;
+        }
+    }
+    
+}

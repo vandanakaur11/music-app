@@ -1,0 +1,68 @@
+.homePage {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.homePage .cards {
+  display: flex;
+  margin: calc(1rem + 2vw) calc(1vw);
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.addcontainer {
+  width: 60vw;
+  /* height: 20vh; */
+  border: 2px solid #ccaa6b;
+  background-color: #ccaa6b;
+  margin: 0 auto;
+  margin-top: 3vh;
+  border-radius: 6px;
+}
+
+.addcontainerInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 15px;
+}
+
+.addheading {
+  margin-left: 3%;
+  margin-right: 9px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: black;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.addheading:hover {
+  cursor: pointer;
+  /* color: wheat; */
+}
+
+.addwrapper {
+  width: 94%;
+  border: 1px solid black;
+  margin: 0 auto;
+  border-radius: 6px;
+  margin-bottom: 25px;
+  margin-top: 15px;
+  background-color: rgb(41, 41, 41);
+  box-shadow: 0 0 16px rgb(41, 41, 41);
+}
+
+.arrows {
+  margin-top: 2px !important;
+}
+
+.arrows:hover {
+  cursor: pointer;
+}

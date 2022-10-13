@@ -1,0 +1,11 @@
+.item div {
+  padding: 2vh;
+  color: #fff;
+  vertical-align: middle;
+  display: table;
+}
+
+.item div span {
+  display: table-row;
+  vertical-align: middle;
+}

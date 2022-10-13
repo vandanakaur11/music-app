@@ -1,0 +1,47 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.card .alert {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  background: rgb(165, 95, 95);
+  color: #fff;
+}
+
+.card .locked {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  padding: 10px;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.336);
+  color: rgb(255, 255, 255);
+}
+
+.card .locked span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImage {
+  box-shadow: 2px 4px 20px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card h3 {
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-top: 1rem;
+}

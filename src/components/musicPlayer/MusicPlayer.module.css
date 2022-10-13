@@ -1,0 +1,266 @@
+/* See the Utils at the bottom of this file*/
+
+.albumsMusicContainer {
+  padding: 0 2rem;
+  /* background-color: #171a1a; */
+  /* background-color: #171107; */
+  background-color: #0c0904;
+  width: 100%;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  /* box-shadow: 2px 6px 20px 8px rgba(34, 42, 63, 1); */
+  box-shadow: 2px 6px 20px 8px #382b11;
+  transition: height 0.3s ease;
+  height: 125px;
+  overflow: hidden;
+  display: block;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: fixed;
+  bottom: 0;
+  transition: height 0.3s ease;
+}
+
+.albumsMusicDetails {
+  /* background-color: #171107; */
+  /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 20px;
+    position: absolute;
+    color: #fff;
+    width: calc(100% - 3rem); */
+  color: white;
+}
+
+.albumsMusicPlayer {
+  padding: 1rem 0;
+  z-index: 1;
+  /* background-color: #171a1a !important; */
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+}
+
+.albumsMusicPlayerMain {
+  /* flex: 1; */
+  margin: 0 auto;
+  flex-direction: column;
+  width: clamp(250px, 90%, 850px);
+}
+
+.slider {
+  width: 100%;
+}
+
+.showDecs {
+  min-height: max-content;
+}
+
+.musicTrackImage {
+  min-width: 60px;
+  min-height: 60px;
+}
+
+.musicTrackImage img {
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+.albumsMusicPlayerTitle {
+  margin: 0 1rem;
+  color: var(--primary-color);
+  width: 250px;
+}
+
+.albumsMusicPlayerTitle * {
+  font-weight: 500;
+}
+
+.musicController *,
+.musicOptionWrapper * {
+  color: var(--primary-color) !important;
+}
+
+.musicControllerBtn {
+  transition: transform 0.3s ease !important;
+  padding: 0.5rem !important;
+}
+
+.musicControllerBtn:hover {
+  transform: scale(1.2);
+}
+
+.disableIcon {
+  opacity: 0.5;
+}
+
+.albumsMusicPlayer p {
+  font-weight: 600;
+  margin: 0 2rem;
+  text-align: center;
+  color: var(--primary-color);
+  width: 30px;
+}
+
+.musicVolume button {
+  margin: 0 0.5rem;
+}
+
+.musicVolume,
+.musicOptionWrapper {
+  width: clamp(100px, 100%, 250px);
+  min-width: 100px;
+  display: flex;
+}
+
+.musicOptionWrapper {
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  margin: 0 0.5rem;
+}
+
+.musicLyrics {
+  max-width: 1.5rem;
+}
+
+.musicLyricsIcon {
+  padding: 0.35rem 0.8rem !important;
+  margin: 0 !important;
+}
+.musicLyricsIconW {
+  max-width: 100% !important;
+  width: min-content;
+}
+
+.albumsMusicPlayerTitle h3 {
+  font-size: 20px;
+}
+
+.albumsMusicPlayerTitle h4 {
+  font-size: 14px;
+}
+
+/* utils */
+.albumsMusicPlayerMain,
+.musicController,
+.musicVolume,
+.albumsMusicPlayerProfile,
+.slider {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .albumsMusicPlayerProfile {
+    display: none !important;
+  }
+
+  .albumsMusicPlayer {
+    align-items: flex-end;
+  }
+
+  .musicVolume {
+    margin-bottom: -10px !important;
+  }
+}
+
+@media (max-width: 550px) {
+  .musicVolume {
+    display: none !important;
+  }
+
+  .musicLyrics {
+    position: absolute;
+    top: 7px;
+    right: 30px;
+  }
+
+  .albumsMusicContainer {
+    padding: 0;
+  }
+
+  .albumsMusicPlayer {
+    padding: 1rem 0;
+  }
+
+  .albumsMusicPlayerMain {
+    min-width: 100%;
+  }
+
+  .albumsMusicContainer {
+    position: fixed;
+  }
+
+  .musicLyricsIconW {
+  }
+
+  .musicLyricsIcon {
+    flex-flow: wrap;
+    display: flex;
+    padding: 0.3rem 0.5rem;
+    font-size: smaller;
+  }
+}
+
+/* Lyrics and Album Details CSS */
+.tabsWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.tab {
+  margin: 1rem;
+  background-color: var(--primary-color);
+  color: black;
+  padding: 0.7rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 300ms;
+}
+
+.tab:hover,
+.active {
+  background-color: var(--button-color);
+  transition: 300ms;
+  color: white;
+}
+
+.tabsContentWrapper {
+  width: 100%;
+}
+
+.lyricsText {
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 10rem;
+  flex-flow: wrap;
+  display: block;
+  padding: 1rem;
+}
+
+.lyricsHeading {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.lyricsText::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: black;
+}
+
+.lyricsText::-webkit-scrollbar {
+  width: 12px;
+  background-color: black;
+}
+
+.lyricsText::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #876727f7;
+}
