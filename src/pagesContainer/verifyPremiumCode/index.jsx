@@ -93,7 +93,12 @@ const VerifyPremiumCode = () => {
 
       <h1>{language.title === "nl" ? "Premium-code" : "Premium Code"}</h1>
 
-      {loading && <h3>Loading..</h3>}
+      {/* {loading && <h3>Loading..</h3>} */}
+      {loading && (
+        <div className={classes.loading}>
+          <h1 style={{ fontSize: "2.5rem" }}>Loading...</h1>
+        </div>
+      )}
 
       {error && <h3 style={{ color: "red" }}>{error}</h3>}
 
@@ -120,20 +125,6 @@ const VerifyPremiumCode = () => {
       </div>
       <Button type="submit" variant="contained">
         {language.title === "nl" ? "Indienen" : "Submit"}
-        <div
-          style={{
-            position: "fixed",
-            top: "50%",
-            right: "44vw",
-            left: "44vw",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 100,
-          }}
-        >
-          <ClipLoader color="red" loading={loading} size={"10vw"} />
-        </div>
       </Button>
 
       <div

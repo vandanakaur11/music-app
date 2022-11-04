@@ -77,7 +77,12 @@ const ForgotPage = () => {
         {language.title === "nl" ? "Vind Je Account" : "Find Your Account"}
       </h1>
 
-      {loading && <h3>Loading..</h3>}
+      {/* {loading && <h3>Loading..</h3>} */}
+      {loading && (
+        <div className={classes.loading}>
+          <h1 style={{ fontSize: "2.5rem" }}>Loading...</h1>
+        </div>
+      )}
 
       {error && <h3 style={{ color: "red" }}>{error}</h3>}
 
@@ -100,20 +105,6 @@ const ForgotPage = () => {
       </div>
 
       <Button type="submit" variant="contained">
-        <div
-          style={{
-            position: "fixed",
-            top: "50%",
-            right: "44vw",
-            left: "44vw",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 100,
-          }}
-        >
-          <ClipLoader color="red" loading={loading} size={"10vw"} />
-        </div>
         {language.title === "nl" ? "Indienen" : "Submit"}
       </Button>
 
