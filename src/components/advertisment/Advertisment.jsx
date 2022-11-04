@@ -6,7 +6,7 @@ const Advertisement = () => {
       {/* <iframe 
             src="https://player.vimeo.com/video/659963617?h=d0cd07c6bd" 
             height="150" 
-            frameborder="0" 
+            frameBorder="0" 
             allow="autoplay; fullscreen; picture-in-picture" 
             style="float: left;"
             allowfullscreen=""
@@ -23,7 +23,7 @@ const Advertisement = () => {
           height="150"
           src="https://player.vimeo.com/video/659963617?h=d0cd07c6bd"
           title="Mulder Christmas Improvisation"
-          frameborder="0"
+          frameBorder="0"
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
         ></iframe>

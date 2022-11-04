@@ -16,58 +16,173 @@ import classes from "./HomePage.module.css";
 const postSelector = (state) => state.music;
 
 const HomePage = ({ albums }) => {
-  console.log("HomePage >>>>>>>>>>>>>>");
+  // console.log("HomePage >>>>>>>>>>>>>>");
 
   let albumArray = [];
 
   albums?.forEach((element) => {
+    // console.log(element)
     let { index } = element;
     albumArray[index - 1] = element;
   });
 
   // console.log(albumArray)
 
-  const [openAdd, setOpenAdd] = useState(false);
   const { language, user } = useSelector(postSelector, shallowEqual);
+
+  const [openAdd, setOpenAdd] = useState(false);
   const [albumsOrder, setAlbumsOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [subsData, setSubsData] = useState(null);
+  const [subscriptionAlbum, setSubscriptionAlbum] = useState(null);
 
   const route = useRouter();
   const dispatch = useDispatch();
 
+  // console.log("homepage user >>>>>>>>>>>>", user);
+
+  // useEffect(() => {
+  //   if (!user) {
+  //     route?.replace("/login");
+  //   }
+  // }, []);
+
+  // const [expireDays, setExpireDays] = useState(null);
+
   // console.log(user)
+  // console.log("stateSubscription===>", subsData);
+  // console.log("stateExpiringDays", expireDays);
+
+  const fetchSubscription = async (subsID) => {
+    // console.log("subsID >>>>>>>>>>>>>", subsID);
+
+    try {
+      const { data } = await api.get(`/admin/subscriptions/${subsID}`);
+
+      if (data) {
+        // console.log("HomePage Subscription Data >>>>>>>>", data);
+        setSubsData(data);
+        localStorage.setItem(
+          "subscriptionSongDetails",
+          JSON.stringify(data?.data?.subscription?.songDetail)
+        );
+        setSubscriptionAlbum(data?.data?.subscription?.songDetail);
+      }
+    } catch (err) {
+      console.error("err >>>>>>>>>>", err);
+
+      // setError(err?.response?.data?.message);
+
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  };
+
+  // const fetchExpiringDays = async (userEmail) => {
+  //   console.log("userEmail >>>>>>>>>>>", userEmail);
+
+  //   try {
+  //     const { data } = await api.get(`/api/expiring-days/${userEmail}`);
+
+  //     if (data) {
+  //       console.log("HomePage ExpiringDays Data >>>>>>>>", data);
+  //       setExpireDays(data);
+  //       localStorage.setItem("Expiring-Days-Api", JSON.stringify(data));
+  //     }
+  //   } catch (err) {
+  //     console.error("err >>>>>>>>>>", err);
+
+  //     setError(err?.response?.data?.message);
+
+  //     setTimeout(() => {
+  //       setError("");
+  //     }, 3000);
+  //   }
+  // };
+
+  if (user?.expiresIn) {
+  }
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("music-app-credentials"));
 
-    if (!user) return route.replace("/login");
+   let abortController = new AbortController();  
+
+    const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
+
+    // console.log("LoggedIn Users ===>", newUser);
+
+    // if (!newUser?.expiresIn) {
+    // console.log("subscription ID ====>",user.data.user.subscriptionID)
+
+    if (!newUser?.expiresIn) {
+      if (user) {
+        fetchSubscription(newUser?.data?.user?.subscriptionID);
+      }
+    }
+
+    // console.log(
+    //   "user?.data?.user?.email >>>>>>>>>>",
+    //   user?.data?.user?.email
+    // );
+
+    // fetchExpiringDays(user?.data?.user?.email);
+    // }
+
+
+    if (!user) {
+      route.replace("/login");
+    }
 
     let token;
 
     if (typeof window !== "undefined") {
       // Perform localStorage action
-      ({ token } = JSON.parse(localStorage.getItem("music-app-credentials")));
+      // ({ token } = JSON.parse(localStorage.getItem("music-app-credentials")));
+      token = JSON.parse(localStorage.getItem("music-app-credentials"));
     }
+    // console.log("token====>",token?.token)
+
+    
 
     const fetchFavourites = async () => {
       try {
-        const { data } = await api.get(`/getFavourites`, {
+        const { data } = await api.get(`/api/getFavourites`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token?.token}`,
           },
         });
+
         // tempArr.push(data?.favourites)
+
         dispatch(setFavourites(data?.favourites));
+
         // console.log("get favourites", data.favourites);
       } catch (err) {
         console.error("err >>>>>>>>>>", err);
-        // setError(err.response.data);
+
+        setError(err?.response?.data);
+
+        setTimeout(() => {
+          setError("");
+        }, 3000);
       }
     };
-    fetchFavourites();
-  }, []);
+ 
+    if(user){
 
+      fetchFavourites();
+    }
+    
+       return () => {
+         abortController.abort();
+       };
+  
+
+  }, [user]);
+
+  
   const handleAdd = () => {
     if (!openAdd) {
       setOpenAdd(true);
@@ -77,9 +192,20 @@ const HomePage = ({ albums }) => {
     // console.log(openAdd);
   };
 
-  const theOrder = [];
+  let theOrder = [];
 
-  albumArray.map((data) => {
+  albumArray.map((data, ind) => {
+    //  console.log(data.index)
+    // ind=ind+1;
+    // console.log(ind)
+    // if(data.index===ind){
+    //   for(let i=0; i<=data.length;i++){
+    //     // theOrder[i]=data;
+    //     theOrder.push(data)
+    //     // console.log(data)
+    //   }
+    //   console.log(theOrder);
+    // }
     if (data.Album_Name === "Love Divine 1") {
       theOrder[0] = data;
     }
@@ -142,14 +268,17 @@ const HomePage = ({ albums }) => {
     }
   });
 
+  // console.log(albumsOrder)
+
   useEffect(() => {
     setAlbumsOrder(theOrder);
-    // console.log(albumsOrder);
   }, []);
+  // console.log(albumsOrder);
 
   return (
     <div className={classes.homePage}>
       {/* {loading && <h3>Loading..</h3>} */}
+
       {error && <h3 style={{ color: "red" }}>{error}</h3>}
 
       <br />
@@ -190,7 +319,6 @@ const HomePage = ({ albums }) => {
           </div>
         )}
       </div>
-
       {/* Code for Advertisement (end) */}
       <div
         style={{
@@ -198,7 +326,6 @@ const HomePage = ({ albums }) => {
           top: "50%",
           right: "44vw",
           left: "44vw",
-
           // left: 0,
           // width: "100%",
           // height: "100%",
@@ -208,11 +335,16 @@ const HomePage = ({ albums }) => {
           zIndex: 100,
         }}
       >
-        <ClipLoader color="red" loading={loading} size={"10vw"} />
+        {/* <ClipLoader color="red" loading={loading} size={"10vw"} /> */}
+        {loading && (
+          <div className={classes.loading}>
+            <h1 style={{ fontSize: "2.5rem" }}>Loading...</h1>
+          </div>
+        )}
       </div>
 
       <FlipMove className={classes.cards}>
-        {albumsOrder.length > 0 &&
+        {albumsOrder?.length > 0 &&
           albumsOrder?.map((album, index) => {
             const url = `${process.env.media_url}/${
               language.title === "eng"
@@ -228,10 +360,23 @@ const HomePage = ({ albums }) => {
                 index={index}
                 trial={user?.hasOwnProperty("expiresIn")}
                 setLoading={setLoading}
+                subscriptionAlbum={subscriptionAlbum}
               />
             );
           })}
       </FlipMove>
+
+      {/* *********** MY WORK ************* */}
+      {/* <FlipMove className={classes.cards}>
+        {albumsOrder.length > 0 && (
+          <Card
+            albumsOrder={albumsOrder}
+            setLoading={setLoading}
+            trial={user?.hasOwnProperty("expiresIn")}
+          />
+        )}
+      </FlipMove> */}
+
       {/* https://githubmemory.com/repo/joshwcomeau/react-flip-move/issues/256 */}
       {/* Using UNSAFE_componentWillReceiveProps in strict mode is not recommended and may indicate bugs in your code. */}
       <Footer />

@@ -10,7 +10,7 @@ import classes from "./AccessCodePage.module.css";
 const postSelector = (state) => state.music;
 
 const AccessCodePage = () => {
-  console.log("Auth LoginPage >>>>>>>>");
+  // console.log("Auth LoginPage >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -50,7 +50,9 @@ const AccessCodePage = () => {
       router.push("/");
     } catch (err) {
       setLoading(false);
-      console.log({ err });
+
+      // console.log({ err });
+
       setError(err?.response?.data);
 
       setTimeout(() => {

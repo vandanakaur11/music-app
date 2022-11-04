@@ -11,8 +11,8 @@ import classes from ".Page.module.css";
 const postSelector = (state) => state.music;
 
 const AuthPage = ({ isSignIn }) => {
-  console.log("AuthPage >>>>>>>>");
-  console.log("isSignIn >>>>>>>>>>>>", isSignIn);
+  // console.log("AuthPage >>>>>>>>");
+  // console.log("isSignIn >>>>>>>>>>>>", isSignIn);
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -54,7 +54,7 @@ const AuthPage = ({ isSignIn }) => {
         setAccessCode(access_code);
       } catch (e) {
         // Do nothing
-        console.log(e);
+        // console.log(e);
       }
     }
   }, []);
@@ -93,7 +93,9 @@ const AuthPage = ({ isSignIn }) => {
       router.push("/");
     } catch (err) {
       setLoading(false);
-      console.log({ err });
+
+      // console.log({ err });
+
       setError(err?.response?.data);
 
       setTimeout(() => {

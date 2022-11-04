@@ -10,7 +10,7 @@ import classes from "./ForgotPage.module.css";
 const postSelector = (state) => state.music;
 
 const ForgotPage = () => {
-  console.log("Auth ForgotPage >>>>>>>>");
+  // console.log("Auth ForgotPage >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -23,6 +23,7 @@ const ForgotPage = () => {
 
   const handleSubmit = async (e) => {
     setLoading(true);
+
     e.preventDefault();
 
     // const payload = { email };
@@ -31,33 +32,40 @@ const ForgotPage = () => {
         email,
       };
 
-      let res = await api.post(`/forgot-password`, body);
+      let { data } = await api.post(`/api/forgot-password`, body);
 
-      // console.log("api response >>>>>>>>>>>", res);
+      // console.log("api response data >>>>>>>>>>>", data);
+      // console.log("api response data?.data >>>>>>>>>>>", data?.data);
+      // console.log("api response data?.data?.id >>>>>>>>>>>", data?.data?.id);
 
-      if (res) {
+      if (data) {
         if (typeof window !== "undefined") {
           // Perform localStorage action
-          localStorage.setItem("userID", res.data.data.id);
+          localStorage.setItem("userID", data?.data?.id);
         }
+
         setLoading(false);
+
+        router.push("/reset-password");
       }
     } catch (err) {
       setLoading(false);
-      // console.error(
-      //   "err.response.data.message >>>>>>>>>>",
-      //   err.response.data.message
-      // );
-      setError(err.response.data.message);
+
+      console.error(
+        "err?.response?.data?.message >>>>>>>>>>",
+        err?.response?.data?.message
+      );
+
+      setError(err?.response?.data?.message);
 
       setTimeout(() => {
         setError("");
-      }, 5000);
+      }, 3000);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={classes.auth}>
+    <form onSubmit={(e) => handleSubmit(e)} className={classes.auth}>
       <Head>
         <title>
           Mulder Music Streaming |{" "}
@@ -91,13 +99,7 @@ const ForgotPage = () => {
         />
       </div>
 
-      <Button
-        type="submit"
-        variant="contained"
-        onClick={() => {
-          router.push("/reset-password");
-        }}
-      >
+      <Button type="submit" variant="contained">
         <div
           style={{
             position: "fixed",
@@ -114,6 +116,7 @@ const ForgotPage = () => {
         </div>
         {language.title === "nl" ? "Indienen" : "Submit"}
       </Button>
+
       {/* <div
         style={{
           position: "fixed",

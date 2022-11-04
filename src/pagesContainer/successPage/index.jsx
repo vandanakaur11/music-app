@@ -8,7 +8,7 @@ import styles from "./../signupPage/Signup.module.css";
 const postSelector = (state) => state.music;
 
 const SuccessPage = () => {
-  console.log("Auth SuccessPage >>>>>>>>");
+  // console.log("Auth SuccessPage >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -16,17 +16,17 @@ const SuccessPage = () => {
 
   const router = useRouter();
 
-  console.log("router.query >>>>>>>>>>>>>", router.query);
+  // console.log("router.query >>>>>>>>>>>>>", router.query);
 
   const { paymentId, PayerID } = router.query;
 
   const apiRequest = async () => {
     try {
       const { data } = await api.get(
-        `/success?paymentId=${paymentId}&PayerID=${PayerID}`
+        `/api/success?paymentId=${paymentId}&PayerID=${PayerID}`
       );
 
-      // console.log("data >>>>>>>>>>>>>", data);
+      // console.log("apiRequest data >>>>>>>>>>>>>", data);
 
       if (data) {
         const { email } = data.payer.payer_info;
@@ -43,7 +43,7 @@ const SuccessPage = () => {
     } catch (err) {
       setError(err?.response?.data);
 
-      // console.log("err?.response?.data >>>>>>>>>>>", err?.response?.data);
+      // console.error("err?.response?.data >>>>>>>>>>>", err?.response?.data);
 
       setTimeout(() => {
         setError("");

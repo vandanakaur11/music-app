@@ -38,7 +38,10 @@ const VerifyUserPage = () => {
 
       // console.log("userData.data.email >>>>>>>>>>>>>>>>>", userData.data.email);
 
-      const res = await api.patch(`/verify/${userData.data.email}`, payload);
+      const res = await api.patch(
+        `/api/verify/${userData.data.email}`,
+        payload
+      );
       // console.log("data >>>>", data);
 
       if (res) {
@@ -53,15 +56,17 @@ const VerifyUserPage = () => {
       }
     } catch (err) {
       setLoading(false);
+
       // console.error(
-      //   "err.response.data.message >>>>>>>>>>",
-      //   err.response.data.message
+      //   "err?.response?.data?.message >>>>>>>>>>",
+      //   err?.response?.data?.message
       // );
-      setError(err.response.data.message);
+
+      setError(err?.response?.data?.message);
 
       setTimeout(() => {
         setError("");
-      }, 5000);
+      }, 3000);
     }
   };
 

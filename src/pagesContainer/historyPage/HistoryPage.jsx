@@ -10,7 +10,7 @@ import classes from "./HistoryPage.module.css";
 const postSelector = (state) => state.music;
 
 const HistoryPage = ({ userEmail }) => {
-  console.log("HistoryPage >>>>>>>>");
+  // console.log("HistoryPage >>>>>>>>");
 
   const { user } = useSelector(postSelector, shallowEqual);
   const route = useRouter();

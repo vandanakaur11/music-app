@@ -1,4 +1,209 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap");
+
 .card_container {
+  height: 800px;
+  width: clamp(500px, 80%, 1100px);
+  background: #0f0b04;
+  box-shadow: 2px 6px 20px 8px #382b11;
+  text-align: center;
+  color: var(--primary-color);
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-bottom: 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.card_container > h1 {
+  font-size: 50px;
+  margin-top: 20px;
+}
+
+.card_container > h2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cards {
+  height: 650px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  overflow: auto;
+  /* border: 1px solid green; */
+}
+
+.card {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  height: 100%;
+  overflow: auto;
+  /* border: 1px solid red; */
+}
+
+.card .list {
+  /* overflow: auto; */
+  margin: 10px 0;
+  /* border: 1px solid red; */
+  overflow-y: scroll;
+  height: 77%;
+}
+
+.card .avail_btn {
+  /* position: sticky; */
+  position: absolute;
+  bottom: 20px;
+  left: 15px;
+  width: 90%;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  background-color: #382b11;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: 0.4s all;
+  padding: 10px 0;
+}
+
+.card .avail_btn:hover {
+  cursor: pointer;
+  background-color: #382b11;
+  transform: translateY(-3px);
+}
+
+.card h1 {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 1.2;
+  color: #0e1c4e;
+}
+
+.card h2 {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card h2 span {
+  color: #000000;
+  font-size: 13px;
+}
+
+.card details {
+  display: flex;
+  border-radius: 5px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.05);
+  border-left: 15px solid gray;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.card details.warning {
+  --highlight: #ffc48b;
+  background: #fff6ee;
+  border-left-color: #ffc48b;
+}
+
+.card details.warning p {
+  list-style-type: corona-warning;
+}
+
+.card details summary,
+.card details p {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: flex-start;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  color: #0e1c4e;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.card details p {
+  text-align: left;
+  font-size: 15px;
+  padding: 10px;
+}
+
+.card details summary {
+  padding: 20px 5px;
+  border-bottom: 1px solid #000;
+}
+
+.card details summary::-webkit-details-marker,
+.card details p::-webkit-details-marker {
+  display: none;
+}
+
+.card details summary::-moz-selection,
+.card details p::-moz-selection {
+  background-color: var(--highlight);
+}
+
+.card details summary::selection,
+.card details p::selection {
+  background-color: var(--highlight);
+}
+
+.card details summary::before {
+  cursor: pointer;
+  position: absolute;
+  display: inline-flex;
+  width: 1rem;
+  height: 1rem;
+  left: 0rem;
+  margin-right: 0.5rem;
+  content: url("data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22.6066 12H1.3934' stroke='%23202842' stroke-width='1.875' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 1.39343V22.6066' stroke='%23202842' stroke-width='1.875' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+.loading_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  color: #ffffff;
+}
+
+.modal_container > h5 + form > * {
+  width: 100%;
+  height: 3rem;
+  background-color: #ffc439;
+  transition: 0.4s all;
+}
+
+.modal_container > h5 + form > *:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+  background-color: #ffc439;
+}
+
+.loading>h1{
+  font-size: 3rem!important;
+}
+
+/* .card_container {
   padding: calc(10.5vw + 20px);
   width: clamp(400px, 75%, 1000px);
   background: #0f0b04;
@@ -77,4 +282,4 @@
   cursor: pointer;
   transform: translateY(-3px);
   background-color: #ffc439;
-}
+} */

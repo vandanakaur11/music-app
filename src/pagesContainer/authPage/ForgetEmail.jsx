@@ -9,7 +9,7 @@ import classes from ".Page.module.css";
 const postSelector = (state) => state.music;
 
 const ForgetEmail = ({ isSignIn }) => {
-  console.log("ForgetEmail >>>>>>>>");
+  // console.log("ForgetEmail >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -51,7 +51,7 @@ const ForgetEmail = ({ isSignIn }) => {
         setAccessCode(access_code);
       } catch (e) {
         // Do nothing
-        console.log(e);
+        // console.log(e);
       }
     }
   }, []);
@@ -90,7 +90,9 @@ const ForgetEmail = ({ isSignIn }) => {
       router.push("/");
     } catch (err) {
       setLoading(false);
-      console.log({ err });
+
+      // console.log({ err });
+
       setError(err?.response?.data);
 
       setTimeout(() => {

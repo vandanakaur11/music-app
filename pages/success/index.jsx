@@ -18,7 +18,9 @@ const index = () => {
     setTimeout(() => {
       type === "signup"
         ? router.push("/verify")
-        : type === "verify" || type === "reset"
+        : type === "verify" ||
+          type === "reset" ||
+          type === "premium-subscription"
         ? router.push("/login")
         : null;
 
@@ -35,7 +37,7 @@ const index = () => {
         style={{
           justifyContent: "center",
           textAlign: "center",
-          padding: "10.5rem",
+          padding: "10rem",
         }}
         className={styles.auth}
       >
@@ -45,15 +47,18 @@ const index = () => {
             for access code
           </h3>
         ) : type === "verify" ? (
-          <h3>Account verified successfully, Now login...</h3>
+          <h3>Account verified successfully, You can now log in....</h3>
+        ) : type === "premium-subscription" ? (
+          <h3>
+            Your subscription has been upgraded successfully for one year...
+          </h3>
         ) : (
-          <h3>Password updated successfully. Now login...</h3>
+          <h3>Password updated successfully. You can now log in....</h3>
         )}
         <span>
           <ClipLoader color="#ffffff" />
         </span>
       </div>
-
       <div
         style={{
           position: "absolute",

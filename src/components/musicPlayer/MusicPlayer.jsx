@@ -368,7 +368,7 @@ function MusicPlayer({
               max={songDuration(audioPlayer.current?.duration)}
             />
             <p>
-              {song && song?.Song_Length}
+              {song?.Song_Length}
               {/* {!calculateTime(audioPlayer.current?.duration) ? "00:00" : calculateTime(audioPlayer.current?.duration)} */}
             </p>
           </div>
@@ -423,10 +423,10 @@ function MusicPlayer({
                             </Tabs>
                         </Box>
                         <TabPanel value={isLyrics} index={0}>
-                            <span className={classes.lyricsText}>{song.Song_Lyrics && song.Song_Lyrics}</span>
+                            <span className={classes.lyricsText}>{song?.Song_Lyrics}</span>
                         </TabPanel>
                         <TabPanel value={isLyrics} index={1}>
-                            <span className={classes.lyricsText}>{album.Song_Desc && album.Song_Desc}</span>
+                            <span className={classes.lyricsText}>{album?.Song_Desc}</span>
                         </TabPanel>
                     </Box> */}
           <div className={classes.tabsWrapper}>
@@ -452,8 +452,8 @@ function MusicPlayer({
             </div>
           </div>
           <div className={classes.tabsContentWrapper}>
-            {/* {isLyrics === 0 ? <span className={classes.lyricsText}>{song.Song_Lyrics && song.Song_Lyrics}</span> : ""}
-                        {isLyrics === 1 ? <span className={classes.lyricsText}>{album.Song_Desc && album.Song_Desc}</span> : ""} */}
+            {/* {isLyrics === 0 ? <span className={classes.lyricsText}>{song?.Song_Lyrics}</span> : ""}
+                        {isLyrics === 1 ? <span className={classes.lyricsText}>{album?.Song_Desc}</span> : ""} */}
             {isLyrics === 0 ? (
               <span className={classes.lyricsText}>
                 {lyrics ? lyrics : "No Lyrics Available"}
@@ -462,9 +462,7 @@ function MusicPlayer({
               ""
             )}
             {isLyrics === 1 ? (
-              <span className={classes.lyricsText}>
-                {album.Song_Desc && album.Song_Desc}
-              </span>
+              <span className={classes.lyricsText}>{album?.Song_Desc}</span>
             ) : (
               ""
             )}

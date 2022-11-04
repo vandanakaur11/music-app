@@ -20,7 +20,10 @@ import classes from "./AlbumPage.module.css";
 const postSelector = (state) => state.music;
 
 const AlbumPage = ({ songs, album }) => {
-  console.log("AlbumPage >>>>>>>>");
+  // console.log("AlbumPage >>>>>>>>");
+
+  // console.log("AlbumPage songs >>>>>>>>>>>>>", songs);
+  // console.log("AlbumPage album >>>>>>>>>>>>>", album);
 
   const { song, language, user, favouriteId } = useSelector(
     postSelector,
@@ -45,6 +48,7 @@ const AlbumPage = ({ songs, album }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [loadingForAlbum, setLoadingForAlbum] = useState(false);
+  // const [lockedSongs,setLockedSongs]=useState(false)
 
   // seperate each song file
   // console.log(pic)
@@ -63,9 +67,12 @@ const AlbumPage = ({ songs, album }) => {
     if (typeof window !== "undefined") {
       // Perform localStorage action
       currentSongIndex = localStorage.getItem("currentSongIndex");
+      // setLockedSongs(localStorage.getItem("Locked Songs"));
     }
+    // console.log("LOOOOOCEKD SOONGS===>",lockedSongs)
 
-    currentSongIndex++;
+    // currentSongIndex++;
+
     if (currentSongIndex < songArray.length) {
       if (typeof window !== "undefined") {
         // Perform localStorage action
@@ -83,10 +90,12 @@ const AlbumPage = ({ songs, album }) => {
 
       setSongName(songArray[0].Song_Name);
       setAlbumName(songArray[0].Album_Name);
+
       // console.log(
       //   "img",
       //   process.env.media_url.concat(songArray[0].Album_Image)
       // );
+
       setPic(process.env.media_url.concat(songArray[0].Album_Image));
       setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
     }
@@ -108,6 +117,7 @@ const AlbumPage = ({ songs, album }) => {
     setAlbumName(songArray[currentSongIndex]?.Album_Name);
     setSongName(songArray[currentSongIndex]?.Song_Name);
     setLyrics(songArray[currentSongIndex]?.Song_Lyrics);
+
     setPic(
       `${process.env.media_url}/`.concat(
         songArray[currentSongIndex]?.Album_Image
@@ -215,7 +225,7 @@ const AlbumPage = ({ songs, album }) => {
   //     })
   // }, [])
 
-  // // set song from playlist
+  // set song from playlist
 
   // useEffect(() => {
   // }, [])
@@ -257,13 +267,13 @@ const AlbumPage = ({ songs, album }) => {
           zIndex: 100,
         }}
       >
-        <ClipLoader color="red" loading={loadingForAlbum} size={"10vw"} />
+        {/* <ClipLoader color="red" loading={loadingForAlbum} size={"10vw"} /> */}
       </div>
       <h4 style={{ color: "white", textAlign: "center" }}>STREAMING</h4>
       <h1>{song?.Album_Name}</h1>
       <LyricsModal
         open={open}
-        setOpem={setOpen}
+        setOpen={setOpen}
         handleOpen={handleOpen}
         handleClose={handleClose}
         lyrics={lyrics}
@@ -274,7 +284,7 @@ const AlbumPage = ({ songs, album }) => {
           url={`${process.env.media_url}/${
             language.title === "eng"
               ? song?.Album_Image
-              : song?.Album_Image && song?.Album_Image.replace("eng", "nl")
+              : song?.Album_Image.replace("eng", "nl")
           }`}
           disableFetch
         />
@@ -307,7 +317,7 @@ const AlbumPage = ({ songs, album }) => {
         <div className={style.infoDiv}>
           <p className={style.Album_Name}>{albumName}</p>
           {/* <br></br> */}
-          <p>{songName}</p>
+          <p className={style.Song_Name}>{songName}</p>
           {lyrics !== "" && (
             <p
               style={{
@@ -315,6 +325,7 @@ const AlbumPage = ({ songs, album }) => {
                 textDecoration: "underline",
                 cursor: "pointer",
               }}
+              className={style.show_lyrics}
               onClick={() => setOpen(true)}
             >
               Show Lyrics

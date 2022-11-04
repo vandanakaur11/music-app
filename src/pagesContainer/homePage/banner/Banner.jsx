@@ -4,7 +4,7 @@ import classes from "./Banner.module.css";
 // import Slider from "react-slick";
 
 const Banner = () => {
-  console.log("Banner >>>>>>>>");
+  // console.log("Banner >>>>>>>>");
 
   // const settings = {
   //     dots: true,

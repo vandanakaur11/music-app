@@ -82,6 +82,9 @@
 .musicTrackLeft button * {
   color: var(--primary-color);
 }
+.showCursor{
+  pointer-events: none!important;
+}
 
 @media (max-width: 550px) {
   .musicTrackLeft h4,

@@ -28,6 +28,17 @@ function Layout({ children }) {
     }
 
     dispatch(setUser(user));
+
+    if(user){
+      router?.replace("/")
+    }else
+    {
+      router?.replace("/login")
+    }
+
+      // if (!user) {
+      //   router?.replace("/login");
+      // }
   }, []);
 
   return (

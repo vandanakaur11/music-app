@@ -13,7 +13,7 @@ const index = ({ songs, album }) => {
 export default index;
 
 export const getStaticPaths = async () => {
-  const { data } = await api.get(`/albums`);
+  const { data } = await api.get(`/api/albums`);
 
   const paths = data.map((curObj) => {
     return {
@@ -49,7 +49,7 @@ export async function getStaticProps(context) {
 
   // console.log("albumName >>>>>>>>>>>>>>>", albumName);
 
-  const { data } = await api.get(`/songs/${albumName}`);
+  const { data } = await api.get(`/api/songs/${albumName}`);
 
   // if (!data?.length) {
   //   // return { notFound: true };

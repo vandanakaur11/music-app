@@ -6,6 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
+import { useState } from "react";
 // import classes from "./SideDrawer.module.css";
 // import classes from "./SideDrawer.module.css";
 import { makeStyles } from "@material-ui/core";
@@ -106,6 +107,7 @@ function TemporaryDrawer() {
     // bottom: false,
     right: false,
   });
+  const [loading,setLoading]=useState(false)
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -120,6 +122,8 @@ function TemporaryDrawer() {
 
   function handleClick(album, index) {
     // console.log(album, index);
+     setLoading(true)
+
     dispatch(setFavouriteId(album?._id));
 
     // dispatch(setFavouriteIndex(index))
@@ -127,6 +131,8 @@ function TemporaryDrawer() {
       route.replace("/login");
       return;
     }
+    
+    
     route.push(`/album/${album?.Album_Name}`);
   }
 

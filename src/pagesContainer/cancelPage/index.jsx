@@ -8,7 +8,7 @@ import styles from "./../signupPage/Signup.module.css";
 const postSelector = (state) => state.music;
 
 const SuccessPage = () => {
-  console.log("Auth SuccessPage >>>>>>>>");
+  // console.log("Auth SuccessPage >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -32,7 +32,7 @@ const SuccessPage = () => {
       <h3 style={{ color: "red" }}>
         {language.title === "nl"
           ? "Je abonnement is opgezegd!"
-          : "Your subscription cancelled!"}
+          : "Your subscription cancelled!, Try again..."}
       </h3>
       <span>
         <ClipLoader color="#ffffff" />

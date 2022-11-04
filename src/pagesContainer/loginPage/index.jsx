@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../store/musicReducer";
 import api from "./../../../services/api";
@@ -10,7 +10,7 @@ import classes from "./LoginPage.module.css";
 const postSelector = (state) => state.music;
 
 const LoginPage = () => {
-  console.log("Auth LoginPage >>>>>>>>");
+  // console.log("Auth LoginPage >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -20,43 +20,78 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Perform localStorage action
+      setMessage(localStorage.getItem("success"));
+
+      setTimeout(() => {
+        localStorage.removeItem("success");
+
+        setMessage("");
+      }, 5000);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Perform localStorage action
+      const userData = localStorage.getItem("music-app-credentials");
+
+      if (userData) {
+        router.replace("/");
+      }
+    }
+  }, []);
 
   // console.log({ email, accessCode });
   // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
 
   const handleSubmit = async (e) => {
     setLoading(true);
+
     e.preventDefault();
 
     const payload = { email, password };
 
+    // console.log("payload >>>>>>>>>>>", payload);
+
     try {
-      const { data } = await api.post("/signin", payload);
+      const { data } = await api.post("/api/signin", payload);
 
       // console.log("data >>>>>>>>>>>", data);
 
-      setLoading(false);
+      // console.log("Login Data >>>>>>>>>>>", data);
+
+      // router.replace("/login", "/");
 
       if (typeof window !== "undefined") {
         // Perform localStorage action
+        // localStorage.setItem("music-app-credentials", JSON.stringify(data));
         localStorage.setItem("music-app-credentials", JSON.stringify(data));
-
-        dispatch(setUser(data));
       }
 
-      router.push("/");
+      dispatch(setUser(data));
+
+      setLoading(false);
+
+      router.replace("/");
     } catch (err) {
       setLoading(false);
-      // console.error(
-      //   "err.response.data.message >>>>>>>>>>",
-      //   err.response.data.message
-      // );
+
+      console.error(
+        "err.response.data.message >>>>>>>>>>",
+        err.response.data.message
+      );
+
       setError(err.response.data.message);
 
       setTimeout(() => {
         setError("");
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -64,13 +99,19 @@ const LoginPage = () => {
   const loginTextNl = "Log in";
 
   return (
-    <form onSubmit={handleSubmit} className={classes.auth}>
+    <form onSubmit={(e) => handleSubmit(e)} className={classes.auth}>
       <Head>
         <title>
           Mulder Music Streaming |{" "}
           {language.title === "nl" ? loginTextNl : loginTextEng}{" "}
         </title>
       </Head>
+
+      {message && (
+        <h1 style={{ color: "white", fontSize: "30px", margin: "20px 0" }}>
+          {message}
+        </h1>
+      )}
 
       <h1>{language.title === "nl" ? loginTextNl : loginTextEng}</h1>
 
@@ -116,13 +157,21 @@ const LoginPage = () => {
         />
       </div>
       <div className={classes.login_btn_div}>
-        <Button
-          // disabled={!isSignIn && !checkBox}
-          type="submit"
-          variant="contained"
-        >
-          {language.title === "nl" ? loginTextNl : loginTextEng}
-        </Button>
+        {loading ? (
+          <Button
+            // disabled={!isSignIn && !checkBox}
+            disabled={true}
+            type="submit"
+            // variant="contained"
+            // style={{ opacity: "0.9" }}
+          >
+            Loading...
+          </Button>
+        ) : (
+          <Button type="submit" variant="contained">
+            {language.title === "nl" ? loginTextNl : loginTextEng}
+          </Button>
+        )}
         <br />
         <p className={classes.forgot_p_tag}>
           <span
@@ -136,6 +185,15 @@ const LoginPage = () => {
           </span>
           <span
             onClick={() => {
+              router.push("/premium-code");
+            }}
+          >
+            {language.title === "nl"
+              ? "Ik Heb Premium Code"
+              : "I've Premium Code"}
+          </span>
+          <span
+            onClick={() => {
               router.push("/forgot");
             }}
           >
@@ -146,7 +204,7 @@ const LoginPage = () => {
           </span>
         </p>
       </div>
-      <p>
+      {/* <p>
         <span
           onClick={() => {
             router.push("/signup");
@@ -156,7 +214,7 @@ const LoginPage = () => {
             ? "Geen account! Nieuwe aanmaken"
             : "No Account! Create new one"}
         </span>
-      </p>
+      </p> */}
     </form>
   );
 };

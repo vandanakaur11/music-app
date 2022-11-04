@@ -5,11 +5,78 @@ import React, { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import SideDrawer from "../sideDrawer/SideDrawer";
 import classes from "./Header.module.css";
+import api from "./../../../services/api";
 
 const postSelector = (state) => state.music;
 
 function Header() {
   const { user, language } = useSelector(postSelector, shallowEqual);
+
+  const [userInfo, setUserInfo] = useState(user);
+  const [expireDays, setExpireDays] = useState(null);
+
+  // let expiringDays;
+  // console.log("stateExpiringDays", expireDays);
+
+  const fetchExpiringDays = async (userEmail) => {
+    // console.log("userEmail >>>>>>>>>>>", userEmail);
+
+    try {
+      const { data } = await api.get(`/api/expiring-days/${userEmail}`);
+
+      if (data) {
+        // console.log("API ExpiringDays Data >>>>>>>>", data);
+        setExpireDays(data);
+        localStorage.setItem("Expiring-Days-Api", JSON.stringify(data));
+      }
+
+      if (user) {
+        setUserInfo({ ...user, expiringDays: data?.data?.days });
+      }
+    } catch (err) {
+      console.error("err >>>>>>>>>>", err);
+
+      //   setError(err?.response?.data?.message);
+
+      //   setTimeout(() => {
+      //     setError("");
+      //   }, 3000);
+    }
+  };
+
+  useEffect(() => {
+    // if (typeof window !== "undefined") {
+    //   expiringDays = JSON.parse(localStorage.getItem("Expiring-Days-Api"));
+    // }
+    // console.log("ExpiringDays-from-Api=====>", expiringDays?.data?.days);
+
+    // if (user) {
+    //   setUserInfo({ ...user, expiringDays: expiringDays?.data?.days });
+    // }
+
+    const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
+    // console.log("LoggedIn Users ===>", user);
+    // console.log("LoggedIn Users ===>", newUser);
+
+    if (!newUser?.expiresIn) {
+      if (user) {
+        fetchExpiringDays(newUser?.data?.user?.email);
+      }
+    }
+  }, [user]);
+
+  // console.log("Header user >>>>>>>>>>>>", userInfo);
+  // console.log(
+  //   "Header userInfo.expiringDays >>>>>>>>>>>>",
+  //   userInfo?.expiringDays
+  // );
+
+  // console.log(
+  //   "Header user user?.data?.user?.subscriptionEndDate >>>>>>",
+  //   userInfo?.data?.user?.subscriptionEndDate
+  // );
+  //  console.log("ExpiringDays-from-Api=====>", userInfo?.expiringDays);
+
   const [open, setOpen] = useState(false);
   const [sideBar, setShowSidebar] = useState(false);
   const [checkCredentials, setCheckCredentials] = useState(null);
@@ -18,6 +85,7 @@ function Header() {
     if (window.innerWidth < 992) {
       setShowSidebar(true);
     }
+
     window.addEventListener("resize", () => {
       setOpen(false);
       if (window.innerWidth < 992) {
@@ -31,8 +99,9 @@ function Header() {
       window.removeEventListener("resize", () => {});
     };
   }, []);
+
   useEffect(() => {
-    if (user?.expiresIn || user?.expiresIn === 0) {
+    if (userInfo?.expiresIn || userInfo?.expiresIn === 0) {
       window.onbeforeunload = function () {
         if (typeof window !== "undefined") {
           // Perform localStorage action
@@ -43,7 +112,7 @@ function Header() {
       };
     }
 
-    var credentialsExist;
+    let credentialsExist;
 
     if (typeof window !== "undefined") {
       // Perform localStorage action
@@ -120,16 +189,14 @@ function Header() {
                             <Menu />
                         </IconButton> */}
 
-            {user?.expiresIn == undefined ? (
+            {userInfo?.expiresIn === undefined ? (
               <div
                 className={classes.playlistMobile}
-                onClick={() => console.log("clicked")}
+                // onClick={() => console.log("clicked")}
               >
                 <SideDrawer />
               </div>
-            ) : (
-              ""
-            )}
+            ) : null}
 
             <Link href="/">
               <a>
@@ -144,17 +211,34 @@ function Header() {
                 />
               </a>
             </Link>
-            {user?.expiresIn >= 0 ? (
-              <div className={classes.timer}>
-                <p>
-                  Your Trial Period Expires{" "}
-                  {user?.expiresIn === 0
-                    ? "Today"
-                    : `In ${user?.expiresIn} Days`}{" "}
-                </p>
-              </div>
-            ) : (
-              ""
+            {user && (
+              <>
+                {
+                  // userInfo?.expiresIn &&
+                  userInfo?.expiresIn >= 0 ? (
+                    <div className={classes.timer}>
+                      <p>
+                        Your Trial Period Expires{" "}
+                        {userInfo?.expiresIn === 0
+                          ? "Today"
+                          : `In ${userInfo?.expiresIn} Days`}{" "}
+                      </p>
+                    </div>
+                  ) : (
+                    // userInfo?.expiringDays &&
+                    userInfo?.expiringDays >= 0 && (
+                      <div className={classes.timer}>
+                        <p>
+                          Your Trial Period Expires{" "}
+                          {userInfo?.expiringDays === 0
+                            ? "Today"
+                            : `In ${userInfo?.expiringDays} Days`}{" "}
+                        </p>
+                      </div>
+                    )
+                  )
+                }
+              </>
             )}
           </div>
         )}
@@ -194,12 +278,10 @@ function Header() {
             {/* <div onClick={() => handleSubscription()} style={{ position: "fixed", left: "30px" }}>
                             Subscription
                         </div> */}
-            {user?.expiresIn === undefined ? (
+            {userInfo?.expiresIn === undefined && (
               <div className={classes.playlistDesktop}>
                 {checkCredentials !== null && <SideDrawer />}
               </div>
-            ) : (
-              ""
             )}
             <Link href="/">
               <a>
@@ -214,17 +296,34 @@ function Header() {
                 />
               </a>
             </Link>
-            {user?.expiresIn >= 0 ? (
-              <div className={classes.timer}>
-                <p>Your Trial Period Expires. </p>
-                <p>
-                  {user?.expiresIn === 0
-                    ? "Today"
-                    : `In ${user?.expiresIn}  Days`}{" "}
-                </p>
-              </div>
-            ) : (
-              ""
+            {user && (
+              <>
+                {
+                  // userInfo?.expiresIn &&
+                  userInfo?.expiresIn >= 0 ? (
+                    <div className={classes.timer}>
+                      <p>Your Trial Period Expires. </p>
+                      <p>
+                        {user?.expiresIn === 0
+                          ? "Today"
+                          : `In ${user?.expiresIn}  Days`}{" "}
+                      </p>
+                    </div>
+                  ) : (
+                    // userInfo?.expiringDays &&
+                    userInfo?.expiringDays >= 0 && (
+                      <div className={classes.timer}>
+                        <p>
+                          Your Trial Period Expires{" "}
+                          {userInfo?.expiringDays === 0
+                            ? "Today"
+                            : `In ${userInfo?.expiringDays} Days`}{" "}
+                        </p>
+                      </div>
+                    )
+                  )
+                }
+              </>
             )}
           </div>
           <nav className={classes.headerNavigation}>
@@ -282,13 +381,13 @@ const nav = [
   // },
 ];
 
-const languages = [
-  {
-    title: "nl",
-    src: "nl.jpg",
-  },
-  {
-    title: "eng",
-    src: "usa.jpg",
-  },
-];
+// const languages = [
+//   {
+//     title: "nl",
+//     src: "nl.jpg",
+//   },
+//   {
+//     title: "eng",
+//     src: "usa.jpg",
+//   },
+// ];

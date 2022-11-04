@@ -6,6 +6,12 @@
   position: relative;
 }
 
+.card[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: no-drop;
+}
+
 .card .alert {
   position: absolute;
   z-index: 1;

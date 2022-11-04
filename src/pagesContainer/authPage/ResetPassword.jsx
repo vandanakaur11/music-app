@@ -11,7 +11,7 @@ import Head from "next/head";
 const postSelector = (state) => state.music;
 
 const ResetPassword = ({ isSignIn }) => {
-  console.log("ResetPassword >>>>>>>>");
+  // console.log("ResetPassword >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -52,7 +52,7 @@ const ResetPassword = ({ isSignIn }) => {
         setAccessCode(access_code);
       } catch (e) {
         // Do nothing
-        console.log(e);
+        // console.log(e);
       }
     }
   }, []);
@@ -91,7 +91,9 @@ const ResetPassword = ({ isSignIn }) => {
       router.push("/");
     } catch (err) {
       setLoading(false);
-      console.log({ err });
+
+      // console.log({ err });
+
       setError(err?.response?.data);
 
       setTimeout(() => {

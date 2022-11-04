@@ -13,7 +13,7 @@ module.exports = (phase) => {
         ],
       },
       env: {
-        base_url: "http://localhost:5000/api",
+        base_url: "http://localhost:5000",
         media_url:
           "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads",
       },
@@ -30,13 +30,13 @@ module.exports = (phase) => {
     reactStrictMode: true,
     images: {
       domains: [
-        "ian-mulder-music.herokuapp.com",
+        "ian-mulder-app-staging.herokuapp.com",
         "musicfilesforheroku.s3.us-west-1.amazonaws.com",
       ],
     },
     // images: { domains: ["localhost", "musicfilesforheroku.s3.us-west-1.amazonaws.com"] },
     env: {
-      base_url: "https://ian-mulder-music.herokuapp.com/api",
+      base_url: "https://ian-mulder-music.herokuapp.com",
       media_url:
         "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads",
       // base_url: "https://music-appps.herokuapp.com/api",

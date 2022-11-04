@@ -1,0 +1,17 @@
+.lyrics_modal {
+}
+
+.cross_sign {
+  color: black;
+  font-size: 18px;
+  position: absolute;
+  top: 15px;
+  font-weight: 600;
+  right: 20px;
+  transition: 0.4s all;
+}
+
+.cross_sign:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+}

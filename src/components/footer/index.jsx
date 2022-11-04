@@ -21,14 +21,18 @@ const Footer = () => {
   function handleLogout() {
     if (typeof window !== "undefined") {
       // Perform localStorage action
+      localStorage.removeItem("Expiring-Days-Api");
+      localStorage.removeItem("subscriptionSongDetails");
       localStorage.removeItem("music-app-credentials");
     }
 
     dispatch(setSong({}));
     dispatch(setSongs([]));
     dispatch(setUser(null));
+
     router.push(`/login`);
   }
+
   function handleLanguage(lan) {
     const { route } = router;
     router.push(`${route}?lang=${lan.title}`);
@@ -56,7 +60,7 @@ const Footer = () => {
         }
       }
     } catch (e) {
-      console.log(e, "- Footer");
+      // console.log(e, "- Footer");
     }
   }, []);
 

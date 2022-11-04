@@ -11,90 +11,131 @@ import styles from "./Signup.module.css";
 const postSelector = (state) => state.music;
 
 const SignupPage = () => {
-  console.log("Auth SignupPage >>>>>>>>");
+  // console.log("Auth SignupPage >>>>>>>>");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [subscriptionID, setSubscriptionID] = useState("");
+  const [subscriptionEndDate, setSubscriptionEndDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [checkBox, setCheckBox] = useState(false);
 
   const { language } = useSelector(postSelector, shallowEqual);
 
   const router = useRouter();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  /* let payerEmail = "";
+  let payerEmail = "";
+  let subscriptionId = "";
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Perform localStorage action
-      localStorage.setItem("payer_email", payerEmail);
+      payerEmail = localStorage.getItem("payer_email");
+      subscriptionId = localStorage.getItem("sub");
     }
   }, []);
 
-  const [email, setEmail] = useState(payerEmail !== "" ? payerEmail : null); */
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [subscriptionID, setSubscriptionID] = useState("");
+  // const [subscriptionEndDate, setSubscriptionEndDate] = useState("");
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState("");
+  // const [checkBox, setCheckBox] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [code, setCode] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [checkBox, setCheckBox] = useState(false);
+  const fetchSubscription = async () => {
+    try {
+      const { data } = await api.get(`/admin/subscriptions/${subscriptionId}`);
 
-  // console.log({ email, accessCode });
-  // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
+      // console.log("data >>>>>>>>", data);
+      // console.log(
+      //   "data?.data?.subscriptions >>>>>>>>",
+      //   data?.data?.subscription
+      // );
+
+      if (data) {
+        // add next day base on duration day
+        const endDate = new Date();
+
+        endDate.setDate(
+          new Date().getDate() + data?.data?.subscription?.duration
+        );
+
+        // console.log("endDate >>>>>>>>", endDate.toISOString());
+
+        setSubscriptionEndDate(endDate.toISOString());
+      }
+    } catch (err) {
+      console.error("err >>>>>>>>>", err?.response);
+      // console.error("err >>>>>>>>>", err?.response?.data);
+
+      // setError(err?.response?.data?.message);
+      setError(err?.response?.data);
+
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  };
+
+  useEffect(() => {
+    setEmail(payerEmail !== "" ? payerEmail : "");
+    setSubscriptionID(subscriptionId !== "" ? subscriptionId : "");
+    // console.log("subscription ID==>", subscriptionID);
+    fetchSubscription();
+  }, []);
+
+  // console.log("subscription ID==>", subscriptionID);
 
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
 
     try {
-      // let payload;
-      // if (payerEmail !== "") {
-      //   let endDate;
-
-      //   if (price === "200.0") endDate = new Date.now() * 1000;
-
-      //   payload = {
-      //     email,
-      //     password,
-      //     subscriptionPlan: {
-      //       code: "LDTRIAL1",
-      //       type: "Offer 1",
-      //       price: "200.0",
-      //       endDate,
-      //     },
-      //   };
-      // } else {
-      let payload = { email, password, code };
-      // }
+      let payload = {
+        email: email.toLowerCase(),
+        password,
+        subscriptionID,
+        subscriptionEndDate,
+      };
 
       // console.log("payload >>>>>>>>>", payload);
 
-      const { data } = await api.post("/signup", payload);
+      const { data } = await api.post("/api/signup", payload);
 
       // console.log("data >>>>>>>>", data);
 
       if (data) {
         if (typeof window !== "undefined") {
           // Perform localStorage action
-          localStorage.setItem("music-app-credentials", JSON.stringify(data));
 
-          localStorage.setItem("type", "signup");
+          localStorage.setItem("success", data.message);
+          localStorage.removeItem("sub");
+
+          if (localStorage.getItem("payer_email")) {
+            localStorage.removeItem("payer_email");
+          }
         }
 
-        dispatch(setUser(data));
+        // dispatch(setUser(data));
 
         setLoading(false);
 
-        router.push("/");
+        router.push("/login");
       }
     } catch (err) {
       setLoading(false);
 
-      // console.error("err.response.data.message >>>>>>>>>>", err.response.data);
+      // console.error("err?.response?.data?.message >>>>>>>>>>", err?.response?.data);
 
-      setError(err.response.data);
+      setError(err?.response?.data);
 
       setTimeout(() => {
         setError("");
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -126,7 +167,7 @@ const SignupPage = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
-          // disabled={payerEmail !== "" ? true : false}
+          disabled={payerEmail !== "" ? true : false}
           required
           placeholder={
             language.title === "nl"
@@ -152,25 +193,6 @@ const SignupPage = () => {
           maxLength={36}
           placeholder={
             language.title === "nl" ? "Voer wachtwoord in" : "Enter Password"
-          }
-        />
-      </div>
-
-      <div className={styles.input}>
-        <label>
-          {language.title === "nl" ? "Toegangscode" : "Access Code"}
-        </label>
-        <input
-          value={code}
-          type="text"
-          onChange={(e) => {
-            setCode(e.target.value);
-          }}
-          required
-          placeholder={
-            language.title === "nl"
-              ? "Voer toegangscode in"
-              : "Enter Access Code"
           }
         />
       </div>

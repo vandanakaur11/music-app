@@ -12,10 +12,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import ALBUMIMAGE from "./../../../public/images/album.png";
-import MELODYIMAGE from "./../../../public/images/melody.png";
 import PAYPALIMAGE from "./../../../public/images/pay_pal.svg";
-import PRICEIMAGE from "./../../../public/images/price.png";
 import api from "./../../../services/api";
 import Cliploader from "react-spinners/ClipLoader";
 import styles from "./Subscriptions.module.css";
@@ -34,11 +31,41 @@ const style = {
 };
 
 const SubscriptionsPage = () => {
-  console.log("Auth SubscriptionsPage >>>>>>>>");
+  // console.log("Auth SubscriptionsPage >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
   const router = useRouter();
+
+  const [subscriptions, setSubscriptions] = useState(null);
+  
+
+  const fetchSubscriptions = async () => {
+    try {
+      const { data } = await api.get("/admin/subscriptions");
+
+      // console.log("data >>>>>>>>>>", data.data.subscriptions);
+
+      if (data) {
+        const allSubscriptionsExceptOne = data?.data?.subscriptions.filter(
+          (subscription) => subscription.code !== "PREMIUM"
+        );
+
+        // console.log("allSubscriptionsExceptOne", allSubscriptionsExceptOne);
+
+        setSubscriptions(allSubscriptionsExceptOne);
+        // setSubscriptions(data.data.subscriptions);
+      }
+    } catch (err) {
+      console.error("err >>>>>>>>", err);
+    }
+  };
+
+  // console.log("subscriptions >>>>>>>>>>", subscriptions);
+
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
 
   // console.log("ALBUMIMAGE >>>>>>", ALBUMIMAGE);
   // console.log("MELODYIMAGE >>>>>>", MELODYIMAGE);
@@ -49,72 +76,56 @@ const SubscriptionsPage = () => {
   const handleClose = () => setOpen(false);
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sandBoxURL, setSandBoxURL] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [paypalURL, setPaypalURL] = useState("");
 
-  const handleClick = async (price) => {
+  const handleClick = async (price, subscriptionId) => {
+    // console.log("price >>>>>>>>>>>", price);
     setLoading(true);
 
-    if (typeof window !== "undefined") {
-      // Perform localStorage action
-      localStorage.removeItem("offerType");
-    }
-
-    setOpen(true);
-    setPrice(price);
-
-    if (typeof window !== "undefined") {
-      // Perform localStorage action
-      localStorage.setItem("offerType", price);
-    }
-
-    try {
-      const { data } = await api.get(`/pay?price=${price}`);
-      console.log("data >>>>>>>>>>>", data);
-
-      if (data) {
-        setSandBoxURL(data.link);
-        setLoading(false);
+    if (price === "0") {
+      if (typeof window !== "undefined") {
+        // Perform localStorage action
+        localStorage.setItem("sub", subscriptionId); // subscriptionID
       }
-    } catch (err) {
-      console.error("err >>>>>>>>>>>", err);
+
+      if (typeof window !== "undefined") {
+        // Perform localStorage action
+        localStorage.removeItem("offerType");
+      }
+
+      setLoading(false);
+
+      setTimeout(() => {
+        router.push("/signup");
+      }, 3000);
+    } else {
+      if (typeof window !== "undefined") {
+        // Perform localStorage action
+        localStorage.removeItem("offerType");
+      }
+
+      setOpen(true);
+      setPrice(price);
+
+      if (typeof window !== "undefined") {
+        // Perform localStorage action
+        localStorage.setItem("offerType", price);
+      }
+
+      try {
+        const { data } = await api.get(`/api/pay?price=${price}`);
+        // console.log("data >>>>>>>>>>>", data);
+
+        if (data) {
+          setPaypalURL(data.link);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("err >>>>>>>>>>>", err);
+      }
     }
   };
-
-  /* const stopWatch = () => {
-    let future = Date.parse("sep 25, 2022 00:00:00");
-    let now = new Date();
-    let diff = future - now;
-
-    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    let hours = Math.floor(diff / (1000 * 60 * 60));
-    let mins = Math.floor(diff / (1000 * 60));
-    let secs = Math.floor(diff / 1000);
-
-    let d = days;
-    let h = hours - days * 24;
-    let m = mins - hours * 60;
-    let s = secs - mins * 60;
-
-    document.getElementById("timer").innerHTML =
-      "<div>" +
-      d +
-      "<span>Days</span></div>" +
-      "<div>" +
-      h +
-      "<span>Hours</span></div>" +
-      "<div>" +
-      m +
-      "<span>Minutes</span></div>" +
-      "<div>" +
-      s +
-      "<span>Seconds</span></div>";
-  };
-
-  useEffect(() => {
-    setInterval(() => {
-      stopWatch();
-    }, 1000);
-  }, []); */
 
   return (
     <div className={styles.card_container}>
@@ -125,9 +136,9 @@ const SubscriptionsPage = () => {
         </title>
       </Head>
 
-      {/* <h1>{language.title === "nl" ? "Abonnement" : "Subscription"}</h1> */}
+      <h1>{language.title === "nl" ? "Abonnement" : "Subscription"}</h1>
 
-      <Typography
+      {/* <Typography
         my={"1rem"}
         color="#ffffff"
         gutterBottom
@@ -135,7 +146,88 @@ const SubscriptionsPage = () => {
         component="h1"
       >
         Coming Soon...
-      </Typography>
+      </Typography> */}
+
+      {/* Subscription */}
+
+      <div className={styles.cards}>
+        {subscriptions?.length > 0 ? (
+          subscriptions?.map((subscription, index) => (
+            <div className={styles.card} key={index}>
+              <h1>Offer {index + 1}</h1>
+
+              <h2>
+                <span>
+                  Valid: ({subscription.duration}{" "}
+                  {subscription.duration > 1 ? "Days" : "Day"})
+                </span>
+                <span>Price: {subscription.price}</span>
+              </h2>
+
+              <div className={styles.list}>
+                {subscription?.songDetail?.map((songDetail, index) => (
+                  <details key={index} className={styles.warning}>
+                    <summary>{songDetail.album}</summary>
+                    {songDetail?.songs?.map((song, index) => (
+                      <p key={index}>{song.Song_Name}</p>
+                    ))}
+                  </details>
+                ))}
+              </div>
+
+              <Button
+                className={styles.avail_btn}
+                size="small"
+                onClick={() =>
+                  handleClick(subscription.price, subscription._id)
+                }
+              >
+                {language.title === "nl" ? "Beschikbaar" : "Avail"}
+              </Button>
+            </div>
+          ))
+        ) : (
+          <div className={styles.loading}>
+            <h1 >Loading...</h1>
+          </div>
+        )}
+      </div>
+
+      <div className={styles.modal}>
+        <Modal
+          keepMounted
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-describedby="keep-mounted-modal-description"
+        >
+          {loading || loader ? (
+            <div className={styles.loading_div}>
+              <h1>Loading...</h1>
+            </div>
+          ) : (
+            <Box sx={style} className={styles.modal_container}>
+              <Typography
+                variant="h5"
+                color="#000000"
+                textAlign="center"
+                mb={2}
+              >
+                {language.title === "nl"
+                  ? "Betaling via PayPal"
+                  : "Payment via PayPal"}
+              </Typography>
+              <form action={`${paypalURL}`} method="post">
+                <Button type="submit">
+                  <Image src={PAYPALIMAGE} width="100%" height="30px" />
+                </Button>
+              </form>
+            </Box>
+          )}
+        </Modal>
+      </div>
+
+      {/* End Subscription */}
 
       {/* <div id="timer"></div> */}
 
@@ -322,7 +414,7 @@ const SubscriptionsPage = () => {
                   ? "Betaling via PayPal"
                   : "Payment via PayPal"}
               </Typography>
-              <form action={sandBoxURL} method="post" onSubmit={handleSubmit}>
+              <form action={paypalURL} method="post" onSubmit={handleSubmit}>
                 <Button type="submit">
                   <Image src={PAYPALIMAGE} width="100%" height="30px" />
                 </Button>
