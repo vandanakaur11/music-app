@@ -36,7 +36,7 @@ module.exports = (phase) => {
     },
     // images: { domains: ["localhost", "musicfilesforheroku.s3.us-west-1.amazonaws.com"] },
     env: {
-      base_url: "https://ian-mulder-music.herokuapp.com",
+      base_url: "https://ian-mulder-app-staging.herokuapp.com",
       media_url:
         "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads",
       // base_url: "https://music-appps.herokuapp.com/api",
