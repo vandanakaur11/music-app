@@ -218,13 +218,13 @@ const LoginPage = () => {
               ? "Ik Heb Premium Code"
               : "I've Premium Code"}
           </span> */}
-          <span
+          {/* <span
             onClick={() => {
               router.push("/signup");
             }}
           >
             {language.title === "nl" ? "Aanmelden" : "Signup"}
-          </span>
+          </span> */}
           {/* <span onClick={() => extendSubscription()}>
             {language.title === "nl"
               ? "Abonnement verlengen"
