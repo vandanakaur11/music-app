@@ -1,125 +1,42 @@
-import { Button } from "@material-ui/core";
+import { useEffect } from "react";
+import { Typography } from "@material-ui/core";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import api from "./../../../services/api";
 import classes from "./VerifyUserPage.module.css";
+import { useRouter } from "next/router";
 
 const postSelector = (state) => state.music;
 
 const VerifyUserPage = () => {
-  const router = useRouter();
+  const { language, user } = useSelector(postSelector, shallowEqual);
+  const router=useRouter()
 
-  const { language, tokenObj, user } = useSelector(postSelector, shallowEqual);
+  // console.log("verified--user==>",user)
+  const successTextEng = "Check your email for verification";
+  const successTextNl = "Controleer uw e-mail voor verificatie";
 
-  // console.log("user", user.data.email);
-  // console.log("tokenObj", tokenObj);
-
-  const [accessCode, setAccessCode] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(false);
-  const [error, setError] = useState("");
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    let userData;
-
-    if (typeof window !== "undefined") {
-      // Perform localStorage action
-      userData = JSON.parse(localStorage.getItem("music-app-credentials"));
+  useEffect(() => {
+    if (user) {
+      router.replace("/");
+    } else {
+      router.replace("/verify");
     }
-
-    // console.log("userData >>>>>>>>>", userData);
-
-    try {
-      const payload = { code: accessCode };
-
-      // console.log("userData.data.email >>>>>>>>>>>>>>>>>", userData.data.email);
-
-      const res = await api.patch(
-        `/api/verify/${userData.data.email}`,
-        payload
-      );
-      // console.log("data >>>>", data);
-
-      if (res) {
-        if (typeof window !== "undefined") {
-          // Perform localStorage action
-          localStorage.removeItem("music-app-credentials");
-
-          localStorage.setItem("type", "verify");
-        }
-
-        router.push("/success");
-      }
-    } catch (err) {
-      setLoading(false);
-
-      // console.error(
-      //   "err?.response?.data?.message >>>>>>>>>>",
-      //   err?.response?.data?.message
-      // );
-
-      setError(err?.response?.data?.message);
-
-      setTimeout(() => {
-        setError("");
-      }, 3000);
-    }
-  };
-
-  const accessCodeTextEng = "Access Code";
-  const accessCodeTextNl = "Toegangscode";
+  }, [user]);
 
   return (
     <>
       <Head>
         <title>
           Mulder Music Streaming |{" "}
-          {language.title === "nl" ? accessCodeTextNl : accessCodeTextEng}
+          {language.title === "nl" ? successTextNl : successTextEng}
         </title>
       </Head>
 
-      <form
-        onSubmit={(e) => onSubmit(e)}
-        className={classes.auth}
-        style={{ height: "60vh" }}
-      >
-        <h1>
-          {language.title === "nl" ? accessCodeTextNl : accessCodeTextEng}
-        </h1>
-
-        {loading && <h3>Loading..</h3>}
-        {error && <h3 style={{ color: "red" }}>{error}</h3>}
-
-        <div className={classes.input}>
-          <label htmlFor="">
-            {language.title === "nl" ? accessCodeTextNl : accessCodeTextEng}
-          </label>
-          <input
-            value={accessCode}
-            type="text"
-            onChange={(e) => {
-              setAccessCode(e.target.value);
-            }}
-            required
-            placeholder={
-              language.title === "nl"
-                ? `Voer ${accessCodeTextNl}`
-                : `Enter ${accessCodeTextEng}`
-            }
-          />
-        </div>
-        <Button
-          // disabled={!isSignIn && !checkBox}
-          type="submit"
-          variant="contained"
-        >
-          {language.title === "nl" ? "Indienen" : "Submit"}
-        </Button>
-      </form>
+      <div className={classes.auth}>
+        <Typography variant="h4">
+          {language.title === "nl" ? successTextNl : successTextEng}
+        </Typography>
+      </div>
     </>
   );
 };

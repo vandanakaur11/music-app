@@ -10,7 +10,7 @@ const postSelector = (state) => state.music;
 const SuccessPage = () => {
   // console.log("Auth SuccessPage >>>>>>>>");
 
-  const { language } = useSelector(postSelector, shallowEqual);
+  const { language,user } = useSelector(postSelector, shallowEqual);
 
   const [error, setError] = useState("");
 
@@ -54,6 +54,14 @@ const SuccessPage = () => {
   useEffect(() => {
     apiRequest();
   }, []);
+
+  // useEffect(()=>{
+  //     if (user) {
+  //       router.replace("/");
+  //     } else {
+  //       router.replace("/success");
+  //     }
+  // },[user])
 
   return (
     <div

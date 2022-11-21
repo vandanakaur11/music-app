@@ -4,7 +4,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Footer from "./../../src/components/footer";
 import styles from "./../../src/pagesContainer/loginPage/LoginPage.module.css";
 
+
 const index = () => {
+
   const router = useRouter();
 
   let type;
@@ -31,6 +33,7 @@ const index = () => {
     }, 3000);
   }, []);
 
+
   return (
     <>
       <div
@@ -49,9 +52,7 @@ const index = () => {
         ) : type === "verify" ? (
           <h3>Account verified successfully, You can now log in....</h3>
         ) : type === "premium-subscription" ? (
-          <h3>
-            Your subscription has been upgraded successfully for one year...
-          </h3>
+          <h3>Your subscription has been upgraded successfully</h3>
         ) : (
           <h3>Password updated successfully. You can now log in....</h3>
         )}

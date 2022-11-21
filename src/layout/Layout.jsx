@@ -8,7 +8,7 @@ import classes from "./Layout.module.css";
 
 const postSelector = (state) => state.music;
 function Layout({ children }) {
-  const { language } = useSelector(postSelector, shallowEqual);
+  const { language,user } = useSelector(postSelector, shallowEqual);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -29,17 +29,20 @@ function Layout({ children }) {
 
     dispatch(setUser(user));
 
-    if(user){
-      router?.replace("/")
-    }else
-    {
-      router?.replace("/login")
-    }
-
-      // if (!user) {
-      //   router?.replace("/login");
-      // }
+    // if (!user) {
+    //   router?.replace("/login");
+    // }
   }, []);
+
+  // useEffect(()=>{
+
+  //     if (user) {
+  //       router?.replace("/");
+  //     } else {
+  //       router?.replace("/login");
+  //     }
+
+  // },[user])
 
   return (
     <>

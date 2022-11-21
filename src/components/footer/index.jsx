@@ -21,6 +21,7 @@ const Footer = () => {
   function handleLogout() {
     if (typeof window !== "undefined") {
       // Perform localStorage action
+      localStorage.removeItem("songArray");
       localStorage.removeItem("Expiring-Days-Api");
       localStorage.removeItem("subscriptionSongDetails");
       localStorage.removeItem("music-app-credentials");

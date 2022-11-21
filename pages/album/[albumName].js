@@ -1,5 +1,5 @@
-import AlbumPage from "../../src/pagesContainer/albumPage/AlbumPage";
-import api from "../../services/api";
+import AlbumPage from "./../../src/pagesContainer/albumPage/AlbumPage";
+import api from "./../../services/api";
 
 const index = ({ songs, album }) => {
   // console.log("songs>>>>>>>>>>>", songs);

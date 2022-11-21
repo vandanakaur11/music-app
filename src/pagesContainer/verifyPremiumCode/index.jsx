@@ -12,7 +12,9 @@ const postSelector = (state) => state.music;
 const VerifyPremiumCode = () => {
   // console.log("VerifyPremiumCode >>>>>>>>");
 
-  const { language } = useSelector(postSelector, shallowEqual);
+  const { language, user } = useSelector(postSelector, shallowEqual);
+
+  // console.log("user===>", user);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -84,6 +86,8 @@ const VerifyPremiumCode = () => {
       }, 3000);
     }
   };
+
+  
 
   return (
     <form onSubmit={handleSubmit} className={classes.auth}>

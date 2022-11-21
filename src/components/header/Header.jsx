@@ -1,6 +1,7 @@
 import { Drawer, List, ListItem } from "@material-ui/core";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import SideDrawer from "../sideDrawer/SideDrawer";
@@ -10,6 +11,8 @@ import api from "./../../../services/api";
 const postSelector = (state) => state.music;
 
 function Header() {
+  const router = useRouter();
+
   const { user, language } = useSelector(postSelector, shallowEqual);
 
   const [userInfo, setUserInfo] = useState(user);
@@ -18,11 +21,9 @@ function Header() {
   // let expiringDays;
   // console.log("stateExpiringDays", expireDays);
 
-  const fetchExpiringDays = async (userEmail) => {
-    // console.log("userEmail >>>>>>>>>>>", userEmail);
-
+  const fetchExpiringDays = async () => {
     try {
-      const { data } = await api.get(`/api/expiring-days/${userEmail}`);
+      const { data } = await api.get(`/api/expiring-days/${user.email}`);
 
       if (data) {
         // console.log("API ExpiringDays Data >>>>>>>>", data);
@@ -36,11 +37,28 @@ function Header() {
     } catch (err) {
       console.error("err >>>>>>>>>>", err);
 
-      //   setError(err?.response?.data?.message);
+      if (
+        err?.response?.data?.message === "Your trial period has been expired!"
+      ) {
+        const trialObj = {
+          expired: true,
+          message: err?.response?.data?.message,
+          email: err?.response?.data?.data?.user,
+        };
 
-      //   setTimeout(() => {
-      //     setError("");
-      //   }, 3000);
+        if (typeof window !== "undefined") {
+          // Perform localStorage action
+          localStorage.setItem("trial-info", JSON.stringify(trialObj));
+        }
+
+        router.push("/extend-subscription");
+      } else {
+        setError(err?.response?.data?.message);
+
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+      }
     }
   };
 
@@ -54,15 +72,17 @@ function Header() {
     //   setUserInfo({ ...user, expiringDays: expiringDays?.data?.days });
     // }
 
-    const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
+    // const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
     // console.log("LoggedIn Users ===>", user);
     // console.log("LoggedIn Users ===>", newUser);
 
-    if (!newUser?.expiresIn) {
-      if (user) {
-        fetchExpiringDays(newUser?.data?.user?.email);
-      }
+    if (userInfo?.expiresIn < 0) {
+      router.replace("/extendSubscription");
+    } else if (user) {
+      // if (!newUser?.expiresIn) {
+      fetchExpiringDays();
     }
+    // }
   }, [user]);
 
   // console.log("Header user >>>>>>>>>>>>", userInfo);

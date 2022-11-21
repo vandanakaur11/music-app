@@ -1,9 +1,8 @@
 import { Button } from "@material-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import ClipLoader from "react-spinners/ClipLoader";
 import api from "./../../../services/api";
 import classes from "./PremiumCode.module.css";
 
@@ -12,7 +11,7 @@ const postSelector = (state) => state.music;
 const PremiumCode = () => {
   // console.log("PremiumCode >>>>>>>>");
 
-  const { language } = useSelector(postSelector, shallowEqual);
+  const { language, user } = useSelector(postSelector, shallowEqual);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -63,6 +62,14 @@ const PremiumCode = () => {
       }, 3000);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/");
+    } else {
+      router.replace("/premium-code");
+    }
+  }, [user]);
 
   return (
     <>

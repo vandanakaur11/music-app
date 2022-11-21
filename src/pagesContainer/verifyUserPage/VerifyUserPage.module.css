@@ -1,5 +1,5 @@
 .auth {
-  padding: calc(2.5vw + 20px);
+  padding: calc(2vw + 100px);
   width: clamp(300px, 75%, 800px);
   /* background: #171a1a; */
   /* background: #111; */
@@ -16,45 +16,6 @@
   font-size: 3rem;
   font-weight: 500;
   margin-bottom: 3rem;
-}
-
-.input {
-  display: flex;
-  flex-direction: column;
-}
-
-.input label {
-  align-self: flex-start;
-  margin: 1rem 0;
-  font-size: 1.2rem;
-}
-
-.input input {
-  border-radius: 10px;
-  padding: 1.4rem;
-  border: none;
-  outline: 2px solid transparent;
-  font-size: 1.1rem;
-  /* background: rgba(29, 35, 35, 1); */
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--primary-color);
-  transition: 0.3s ease;
-}
-
-.input input:focus {
-  outline: 2px solid #382b11;
-}
-
-.auth button,
-.auth button:hover {
-  padding: 1rem;
-  margin: 3rem 0;
-  width: 100%;
-  text-transform: capitalize;
-  font-size: 1.1rem;
-  border-radius: 10px;
-  background: var(--button-color);
-  color: var(--primary-color);
 }
 
 .auth p span {

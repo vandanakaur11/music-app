@@ -1,22 +1,25 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import ClipLoader from "react-spinners/ClipLoader";
-import style from "../../../styles/global.module.scss";
-import Card from "../../components/card/Card";
-import LyricsModal from "../../components/lyricsModal/LyricsModal";
-import MusicTracker from "../../components/musicTrack/MusicTrack";
+import style from "./../../../styles/global.module.scss";
+import Card1 from "./../../components/card1/Card1";
+import LyricsModal from "./../../components/lyricsModal/LyricsModal";
+import MusicTracker from "./../../components/musicTrack/MusicTrack";
 import {
   setAlbum,
   setFavouriteId,
   setSong,
   setSongs,
-} from "../../store/musicReducer";
+} from "./../../store/musicReducer";
 import classes from "./AlbumPage.module.css";
+// import shaka from "shaka-player/dist/shaka-player.ui";
+import Hls from "hls.js";
+import plyr from "plyr";
+
 const postSelector = (state) => state.music;
 
 const AlbumPage = ({ songs, album }) => {
@@ -30,7 +33,7 @@ const AlbumPage = ({ songs, album }) => {
     shallowEqual
   );
 
-  // console.log(ind);
+  // console.log("postSelector >>>>>>>>>", postSelector);
 
   const route = useRouter();
   const dispatch = useDispatch();
@@ -50,8 +53,17 @@ const AlbumPage = ({ songs, album }) => {
   const [loadingForAlbum, setLoadingForAlbum] = useState(false);
   // const [lockedSongs,setLockedSongs]=useState(false)
 
+  const audioPlayer = useRef();
+  // const audio = useRef();
+  // const audioContainer = useRef();
+
   // seperate each song file
   // console.log(pic)
+
+  // License and MDP For DRM Protected
+  // const licenseServer = "https://widevine-proxy.appspot.com/proxy";
+  // const mpdFile =
+  //   "https://dash.akamaized.net/dash264/TestCases/1c/qualcomm/2/MultiRate.mpd";
 
   const songFileArray = songs.map((ele, ind) => {
     let fileName = process.env.media_url.concat(ele.Song_File);
@@ -71,7 +83,7 @@ const AlbumPage = ({ songs, album }) => {
     }
     // console.log("LOOOOOCEKD SOONGS===>",lockedSongs)
 
-    // currentSongIndex++;
+    currentSongIndex++;
 
     if (currentSongIndex < songArray.length) {
       if (typeof window !== "undefined") {
@@ -104,6 +116,57 @@ const AlbumPage = ({ songs, album }) => {
   useEffect(() => {
     // console.log(`${process.env.media_url}/${songArray[0]?.Song_File}`)
     setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
+
+    // DRM Protected Setup
+    // let audio = audio.current;
+    // let audioContainer = audioContainer.current;
+
+    // console.log("audio >>>>>>>>>>", audio);
+    // console.log("audioContainer >>>>>>>>>>", audioContainer);
+
+    // let player = new shaka.Player(audio);
+
+    // const ui = new shaka.ui.Overlay(player, audioContainer, audio);
+    // const controls = ui.getControls();
+
+    // console.log("controls >>>>>>>>>", controls);
+
+    // console.log("Object.keys(shaka.ui) >>>>>>>>>>", Object.keys(shaka.ui));
+
+    // player.configure({
+    //   drm: {
+    //     servers: { "com.widevine.alpha": licenseServer },
+    //   },
+    // });
+
+    // let audio;
+    //  ====== testing song url =====
+    // hls.loadSource("http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8");
+
+    if (Hls.isSupported() && audioPlayer) {
+      const streamURL =
+        "https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8";
+      // const streamURL =
+      //   "https://media.hungama.com/c/4/da0/297/91645121/91645121_128.mp3?SfwwOZGLxph0jHNlcBJ3wi42ilZKBdLuf-hVhjqLbTw7HkoFaQhlxrDOX319TjloxAO8bHtWmonW4nhZdHlN3cLbENvuf9VzIgsZewyVizXn8XdkDw_yyzVSJlc0npF96zP7Lw";
+      // let audio = audioPlayer;
+      const hls = new Hls();
+      hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+        console.log("video and hls.js are now bound together !");
+      });
+      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        console.log(
+          "manifest loaded, found " + data.levels.length + " quality level"
+        );
+      });
+      // console.log("streamURL >>>>>>>>>>>", streamURL);
+      hls.loadSource(streamURL);
+      // hls.attachMedia(audioPlayer);
+      hls.attachMedia(document.querySelector("#player"));
+    }
+
+    // console.log("audio===>", audio);
+
+    plyr.setup(document.querySelector("#player"));
   }, [songArray]);
 
   useEffect(() => {
@@ -279,7 +342,7 @@ const AlbumPage = ({ songs, album }) => {
         lyrics={lyrics}
       />
       <div className={classes.albumsMain}>
-        <Card
+        <Card1
           title={song?.Album_Name}
           url={`${process.env.media_url}/${
             language.title === "eng"
@@ -290,7 +353,7 @@ const AlbumPage = ({ songs, album }) => {
         />
         <div className={classes.albumsMainPlaylist}>
           {songs?.map((albumSong, i) =>
-            songs.length - 1 !== i ? (
+            songs?.length - 1 !== i ? (
               <Fragment key={i}>
                 <MusicTracker
                   currentTime={currentTime}
@@ -337,12 +400,21 @@ const AlbumPage = ({ songs, album }) => {
         <div className={style.trash}></div>
         <div className={style.trash}></div>
         <div className={style.trash}></div>
-        <AudioPlayer
+        <audio
+          preload="true"
+          id="player"
+          ref={audioPlayer}
+          controls
+          crossOrigin
+          // src="https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8"
+          // src="https://media.hungama.com/c/4/150/9e6/90543863/90543863_128.mp3?Ei-nJOcOeWpH8ibXh5JHrH-CHx6ml2paMACrWpp90Gpmwc7csyG1rx-tGEVI3UPW6n_K817PbppBlOZBFtuOG-_-d3nZ5LSDTz3Wq9MeOXqUgdX0GnZ5s_B5kVU7ZlKe9kXZvg"
+        ></audio>
+        {/* <AudioPlayer
           className={style.player}
           progressJumpStep={3000}
           src={singleSong}
           onEnded={(e) => onEndSong()}
-        />
+        /> */}
       </div>
 
       {/* <MusicPlayer currentTime={currentTime} setCurrentTime={setCurrentTime} songs={songs} trial={user?.hasOwnProperty("expiresIn")} songName={songName} setSongName={setSongName} setLyrics={setLyrics} lyrics={lyrics} /> */}

@@ -6,7 +6,7 @@ import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import React, { useCallback, useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setFavourites, setSong, setSongs } from "../../store/musicReducer";
+import { setFavourites, setSong, setSongs } from "./../../store/musicReducer";
 import api from "./../../../services/api";
 import classes from "./MusicTrack.module.css";
 
@@ -140,7 +140,8 @@ const MusicTracker = ({
     setMyCommutativeLength(count);
   }
 
-  function songJump() {
+  function songJump(e) {
+    // e.stopPropagation();
     // console.log("songJump >>>>>>>>>>>>>");
 
     // if (locked) return;
@@ -177,7 +178,9 @@ const MusicTracker = ({
     setSongArray(songArray);
   }
 
-  const handleChangeSong = () => {};
+  const handleChangeSong = () => {
+    console.log("clicked!!");
+  };
 
   const handleLike = async (id) => {
     // console.log("handleLike id >>>>>>>>>>>>>>>>>>>", id);
@@ -237,7 +240,7 @@ const MusicTracker = ({
   }, []);
 
   return (
-    <div onClick={() => handleChangeSong}>
+    <div onClick={() => handleChangeSong()}>
       <div
         ref={albumSong?._id === song?._id ? trackRef : null}
         // onClick={isMobile ? songJump : songHandler}
@@ -249,7 +252,7 @@ const MusicTracker = ({
         // disabled={lockedSongs}
         // disabled={(trial && index === 0) || !lockedSongs}
       >
-        <div className={classes.musicTrackLeft} onClick={songJump}>
+        <div className={classes.musicTrackLeft}>
           <IconButton className={classes.songTune}>
             <MusicNote />
           </IconButton>
@@ -270,7 +273,7 @@ const MusicTracker = ({
               {albumSong?.Song_Lyrics}
               </marquee>
           ) : ( */}
-          <h4>{albumSong?.Song_Name}</h4>
+          <h4 onClick={(e) => songJump(e)}>{albumSong?.Song_Name}</h4>
           {/* )} */}
         </div>
         <div></div>

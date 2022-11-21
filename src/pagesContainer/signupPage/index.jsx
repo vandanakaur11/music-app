@@ -3,8 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../store/musicReducer";
+import { shallowEqual, useSelector } from "react-redux";
 import api from "./../../../services/api";
 import styles from "./Signup.module.css";
 
@@ -15,109 +14,58 @@ const SignupPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [subscriptionID, setSubscriptionID] = useState("");
-  const [subscriptionEndDate, setSubscriptionEndDate] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [checkBox, setCheckBox] = useState(false);
 
-  const { language } = useSelector(postSelector, shallowEqual);
+  const { language, user } = useSelector(postSelector, shallowEqual);
 
   const router = useRouter();
 
-  // const dispatch = useDispatch();
+  console.log("router.query", router.query);
 
-  let payerEmail = "";
-  let subscriptionId = "";
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Perform localStorage action
-      payerEmail = localStorage.getItem("payer_email");
-      subscriptionId = localStorage.getItem("sub");
-    }
-  }, []);
-
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [subscriptionID, setSubscriptionID] = useState("");
-  // const [subscriptionEndDate, setSubscriptionEndDate] = useState("");
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState("");
-  // const [checkBox, setCheckBox] = useState(false);
-
-  const fetchSubscription = async () => {
-    try {
-      const { data } = await api.get(`/admin/subscriptions/${subscriptionId}`);
-
-      // console.log("data >>>>>>>>", data);
-      // console.log(
-      //   "data?.data?.subscriptions >>>>>>>>",
-      //   data?.data?.subscription
-      // );
-
-      if (data) {
-        // add next day base on duration day
-        const endDate = new Date();
-
-        endDate.setDate(
-          new Date().getDate() + data?.data?.subscription?.duration
-        );
-
-        // console.log("endDate >>>>>>>>", endDate.toISOString());
-
-        setSubscriptionEndDate(endDate.toISOString());
-      }
-    } catch (err) {
-      console.error("err >>>>>>>>>", err?.response);
-      // console.error("err >>>>>>>>>", err?.response?.data);
-
-      // setError(err?.response?.data?.message);
-      setError(err?.response?.data);
-
-      setTimeout(() => {
-        setError("");
-      }, 3000);
-    }
-  };
+  const { email: userEmail, access_code } = router.query;
 
   useEffect(() => {
-    setEmail(payerEmail !== "" ? payerEmail : "");
-    setSubscriptionID(subscriptionId !== "" ? subscriptionId : "");
-    // console.log("subscription ID==>", subscriptionID);
-    fetchSubscription();
+    console.log("userEmail >>>>>>>>", userEmail);
+    console.log("access_code >>>>>>>>", access_code);
+
+    setEmail(userEmail !== "" ? userEmail : "");
+    setVerificationCode(access_code !== "" ? access_code : "");
   }, []);
 
-  // console.log("subscription ID==>", subscriptionID);
+  useEffect(() => {
+    if (user) {
+      router.replace("/");
+    } else {
+      router.replace("/signup");
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
+
+    setLoading(true);
 
     try {
       let payload = {
         email: email.toLowerCase(),
         password,
-        subscriptionID,
-        subscriptionEndDate,
+        code: verificationCode,
       };
 
-      // console.log("payload >>>>>>>>>", payload);
+      console.log("payload >>>>>>>>>", payload);
 
       const { data } = await api.post("/api/signup", payload);
 
-      // console.log("data >>>>>>>>", data);
+      console.log("data >>>>>>>>", data);
 
       if (data) {
         if (typeof window !== "undefined") {
           // Perform localStorage action
 
-          localStorage.setItem("success", data.message);
-          localStorage.removeItem("sub");
-
-          if (localStorage.getItem("payer_email")) {
-            localStorage.removeItem("payer_email");
-          }
+          localStorage.setItem("success", data?.message);
         }
 
         // dispatch(setUser(data));
@@ -129,9 +77,12 @@ const SignupPage = () => {
     } catch (err) {
       setLoading(false);
 
-      // console.error("err?.response?.data?.message >>>>>>>>>>", err?.response?.data);
+      console.error(
+        "err?.response?.data?.message >>>>>>>>>>",
+        err?.response?.data?.message
+      );
 
-      setError(err?.response?.data);
+      setError(err?.response?.data?.message);
 
       setTimeout(() => {
         setError("");
@@ -144,11 +95,11 @@ const SignupPage = () => {
 
   const codePromiseText =
     language.title === "nl"
-      ? "Ik beloof dat dit account alleen door mij zal worden gebruikt en niet om de inhoud met anderen te delen."
-      : "I promise this account will only be used by me, and not to share any of the content with others.";
+      ? " Ik beloof dat dit account alleen door mij zal worden gebruikt en niet om de inhoud met anderen te delen."
+      : " I promise this account will only be used by me, and not to share any of the content with others.";
 
   return (
-    <form onSubmit={handleSubmit} className={styles.auth}>
+    <form onSubmit={(e) => handleSubmit(e)} className={styles.auth}>
       <Head>
         <title>
           Mulder Music Streaming |{" "}
@@ -167,7 +118,6 @@ const SignupPage = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
-          disabled={payerEmail !== "" ? true : false}
           required
           placeholder={
             language.title === "nl"
@@ -193,6 +143,27 @@ const SignupPage = () => {
           maxLength={36}
           placeholder={
             language.title === "nl" ? "Voer wachtwoord in" : "Enter Password"
+          }
+        />
+      </div>
+
+      <div className={styles.input}>
+        <label>
+          {language.title === "nl" ? "Verificatie code" : "Verification Code"}
+        </label>
+        <input
+          value={verificationCode}
+          type="text"
+          onChange={(e) => {
+            setVerificationCode(e.target.value);
+          }}
+          required
+          minLength={6}
+          maxLength={36}
+          placeholder={
+            language.title === "nl"
+              ? "Voer verificatiecode in"
+              : "Enter Verification Code"
           }
         />
       </div>

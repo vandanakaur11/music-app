@@ -3,14 +3,12 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  
 }
 
 .albums h1 {
   color: var(--primary-color);
   text-align: center;
   margin-top: 2rem;
-  
 }
 
 .albumsMain {
@@ -27,7 +25,6 @@
     height: clamp(550px, 550px, 600px); */
   scrollbar-width: none;
   -ms-overflow-style: none;
-  
 }
 
 .albumsMainPlaylist::-webkit-scrollbar {

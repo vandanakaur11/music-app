@@ -1,7 +1,7 @@
 .music {
   position: fixed;
   width: 100%;
-  max-height: 12%;
+  height: 12%;
   bottom: 0;
   display: flex;
   justify-content: space-between;
@@ -11,6 +11,7 @@
   box-shadow: 2px 0px 12px 8px #382b11;
   padding-left: 5%;
   padding-right: 5%;
+  z-index: 2000;
   .player {
     // width: 60%;
     background-color: black;
@@ -46,6 +47,11 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .music {
+    height: 15%;
+  }
+}
 @media (max-width: 680px) {
   .music {
     img {

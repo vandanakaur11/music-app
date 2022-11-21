@@ -3,14 +3,13 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import FlipMove from "react-flip-move";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import ClipLoader from "react-spinners/ClipLoader";
-import downarrow from "../../../public/images/downarrownew.png";
-import uparrow from "../../../public/images/uparrownew.png";
-import Advertisement from "../../components/advertisment/Advertisment";
-import Card from "../../components/card/Card";
-import Footer from "../../components/footer";
-import { setFavourites } from "../../store/musicReducer";
+import downarrow from "./../../../public/images/downarrownew.png";
+import uparrow from "./../../../public/images/uparrownew.png";
 import api from "./../../../services/api";
+import Advertisement from "./../../components/advertisment/Advertisment";
+import Card from "./../../components/card/Card";
+import Footer from "./../../components/footer";
+import { setFavourites } from "./../../store/musicReducer";
 import classes from "./HomePage.module.css";
 
 const postSelector = (state) => state.music;
@@ -54,25 +53,30 @@ const HomePage = ({ albums }) => {
   // console.log("stateSubscription===>", subsData);
   // console.log("stateExpiringDays", expireDays);
 
-  const fetchSubscription = async (subsID) => {
+  const fetchSubscription = async () => {
     // console.log("subsID >>>>>>>>>>>>>", subsID);
 
     try {
-      const { data } = await api.get(`/admin/subscriptions/${subsID}`);
+      const { data } = await api.get(
+        `/admin/subscriptions/${user.subscriptionID}`
+      );
+
+      // console.log("HomePage subscription data >>>>>>>>", data);
 
       if (data) {
-        // console.log("HomePage Subscription Data >>>>>>>>", data);
         setSubsData(data);
+
         localStorage.setItem(
           "subscriptionSongDetails",
           JSON.stringify(data?.data?.subscription?.songDetail)
         );
+
         setSubscriptionAlbum(data?.data?.subscription?.songDetail);
       }
     } catch (err) {
       console.error("err >>>>>>>>>>", err);
 
-      // setError(err?.response?.data?.message);
+      setError(err?.response?.data?.message);
 
       setTimeout(() => {
         setError("");
@@ -80,47 +84,24 @@ const HomePage = ({ albums }) => {
     }
   };
 
-  // const fetchExpiringDays = async (userEmail) => {
-  //   console.log("userEmail >>>>>>>>>>>", userEmail);
-
-  //   try {
-  //     const { data } = await api.get(`/api/expiring-days/${userEmail}`);
-
-  //     if (data) {
-  //       console.log("HomePage ExpiringDays Data >>>>>>>>", data);
-  //       setExpireDays(data);
-  //       localStorage.setItem("Expiring-Days-Api", JSON.stringify(data));
-  //     }
-  //   } catch (err) {
-  //     console.error("err >>>>>>>>>>", err);
-
-  //     setError(err?.response?.data?.message);
-
-  //     setTimeout(() => {
-  //       setError("");
-  //     }, 3000);
-  //   }
-  // };
-
   if (user?.expiresIn) {
   }
 
   useEffect(() => {
+    let abortController = new AbortController();
 
-   let abortController = new AbortController();  
-
-    const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
+    // const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
 
     // console.log("LoggedIn Users ===>", newUser);
 
     // if (!newUser?.expiresIn) {
     // console.log("subscription ID ====>",user.data.user.subscriptionID)
 
-    if (!newUser?.expiresIn) {
-      if (user) {
-        fetchSubscription(newUser?.data?.user?.subscriptionID);
-      }
+    // if (!newUser?.expiresIn) {
+    if (user) {
+      fetchSubscription();
     }
+    // }
 
     // console.log(
     //   "user?.data?.user?.email >>>>>>>>>>",
@@ -129,7 +110,6 @@ const HomePage = ({ albums }) => {
 
     // fetchExpiringDays(user?.data?.user?.email);
     // }
-
 
     if (!user) {
       route.replace("/login");
@@ -143,8 +123,6 @@ const HomePage = ({ albums }) => {
       token = JSON.parse(localStorage.getItem("music-app-credentials"));
     }
     // console.log("token====>",token?.token)
-
-    
 
     const fetchFavourites = async () => {
       try {
@@ -169,20 +147,16 @@ const HomePage = ({ albums }) => {
         }, 3000);
       }
     };
- 
-    if(user){
 
+    if (user) {
       fetchFavourites();
     }
-    
-       return () => {
-         abortController.abort();
-       };
-  
 
+    return () => {
+      abortController.abort();
+    };
   }, [user]);
 
-  
   const handleAdd = () => {
     if (!openAdd) {
       setOpenAdd(true);
@@ -273,7 +247,8 @@ const HomePage = ({ albums }) => {
   useEffect(() => {
     setAlbumsOrder(theOrder);
   }, []);
-  // console.log(albumsOrder);
+
+  // console.log("albumsOrder >>>>>>>>>", albumsOrder);
 
   return (
     <div className={classes.homePage}>

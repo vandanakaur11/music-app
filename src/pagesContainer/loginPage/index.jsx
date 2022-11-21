@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../store/musicReducer";
+import ExtendSubscription from "../extendSubscriptionpage";
 import api from "./../../../services/api";
 import classes from "./LoginPage.module.css";
 
@@ -28,11 +29,13 @@ const LoginPage = () => {
       // Perform localStorage action
       setMessage(localStorage.getItem("success"));
 
+      localStorage.removeItem("userEmail");
+
       setTimeout(() => {
         localStorage.removeItem("success");
 
         setMessage("");
-      }, 5000);
+      }, 3000);
     }
   }, []);
 
@@ -50,31 +53,37 @@ const LoginPage = () => {
   // console.log({ email, accessCode });
   // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
 
-  const handleSubmit = async (e) => {
-    setLoading(true);
+  const extendSubscription = () => {
+    localStorage.setItem("userEmail", "kerab20471@invodua.com");
+    router.push("/extend-subscription");
+  };
 
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = { email, password };
-
-    // console.log("payload >>>>>>>>>>>", payload);
+    setLoading(true);
 
     try {
+      const payload = { email, password };
+
+      // console.log("payload >>>>>>>>>>>", payload);
+
       const { data } = await api.post("/api/signin", payload);
 
       // console.log("data >>>>>>>>>>>", data);
-
-      // console.log("Login Data >>>>>>>>>>>", data);
+      // console.log("data?.data?.user >>>>>>>>>>>", data?.data?.user);
 
       // router.replace("/login", "/");
 
       if (typeof window !== "undefined") {
         // Perform localStorage action
-        // localStorage.setItem("music-app-credentials", JSON.stringify(data));
-        localStorage.setItem("music-app-credentials", JSON.stringify(data));
+        localStorage.setItem(
+          "music-app-credentials",
+          JSON.stringify(data?.data?.user)
+        );
       }
 
-      dispatch(setUser(data));
+      dispatch(setUser(data?.data?.user));
 
       setLoading(false);
 
@@ -83,15 +92,32 @@ const LoginPage = () => {
       setLoading(false);
 
       console.error(
-        "err.response.data.message >>>>>>>>>>",
-        err.response.data.message
+        "err?.response?.data?.message >>>>>>>>>>",
+        err?.response?.data?.message
       );
 
-      setError(err.response.data.message);
+      if (
+        err?.response?.data?.message === "Your trial period has been expired!"
+      ) {
+        const trialObj = {
+          expired: true,
+          message: err?.response?.data?.message,
+          email: err?.response?.data?.data?.user,
+        };
 
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+        if (typeof window !== "undefined") {
+          // Perform localStorage action
+          localStorage.setItem("trial-info", JSON.stringify(trialObj));
+        }
+
+        router.push("/extend-subscription");
+      } else {
+        setError(err?.response?.data?.message);
+
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+      }
     }
   };
 
@@ -174,7 +200,7 @@ const LoginPage = () => {
         )}
         <br />
         <p className={classes.forgot_p_tag}>
-          <span
+          {/* <span
             onClick={() => {
               router.push("/subscriptions");
             }}
@@ -191,7 +217,19 @@ const LoginPage = () => {
             {language.title === "nl"
               ? "Ik Heb Premium Code"
               : "I've Premium Code"}
+          </span> */}
+          <span
+            onClick={() => {
+              router.push("/signup");
+            }}
+          >
+            {language.title === "nl" ? "Aanmelden" : "Signup"}
           </span>
+          {/* <span onClick={() => extendSubscription()}>
+            {language.title === "nl"
+              ? "Abonnement verlengen"
+              : "Extend Subscription"}
+          </span> */}
           <span
             onClick={() => {
               router.push("/forgot");

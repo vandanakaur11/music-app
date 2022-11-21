@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import api from "./../../../services/api";
@@ -12,7 +12,7 @@ const postSelector = (state) => state.music;
 const ForgotPage = () => {
   // console.log("Auth ForgotPage >>>>>>>>");
 
-  const { language } = useSelector(postSelector, shallowEqual);
+  const { language,user } = useSelector(postSelector, shallowEqual);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -64,6 +64,15 @@ const ForgotPage = () => {
     }
   };
 
+  useEffect(()=>{
+    if(user){
+      router.replace("/")
+    }
+    else{
+      router.replace("/forgot")
+    }
+  },[user])
+
   return (
     <form onSubmit={(e) => handleSubmit(e)} className={classes.auth}>
       <Head>
@@ -74,7 +83,9 @@ const ForgotPage = () => {
       </Head>
 
       <h1>
-        {language.title === "nl" ? "Vind Je Account" : "Find Your Account"}
+        {language.title === "nl"
+          ? "Wachtwoord opnieuw instellen"
+          : "Reset Password"}
       </h1>
 
       {/* {loading && <h3>Loading..</h3>} */}
@@ -105,7 +116,7 @@ const ForgotPage = () => {
       </div>
 
       <Button type="submit" variant="contained">
-        {language.title === "nl" ? "Indienen" : "Submit"}
+        {language.title === "nl" ? "Doorgaan" : "Continue"}
       </Button>
 
       {/* <div

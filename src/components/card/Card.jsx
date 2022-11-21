@@ -19,13 +19,19 @@ const Card = forwardRef(
     ref
   ) => {
     // console.log("index >>>>>>>>>>>>>>", index);
-    // console.log("SubscriptionAlbum >>>>>>>>>>>>>>", subscriptionAlbum);
-    // console.log("Album-from-card===>",album)
+    // console.log("subscriptionAlbum >>>>>>>>>>>>>>", subscriptionAlbum);
+    // console.log("album >>>>>>>>>>>>>>", album);
+    // console.log("url >>>>>>>>>>>>>>", url);
+    // console.log("trial >>>>>>>>>>>>>>", trial);
+    // console.log("disableFetch >>>>>>>>>>>>>>", disableFetch);
+    // console.log("setLoading >>>>>>>>>>>>>>", setLoading);
+
+    const { user } = useSelector(postSelector, shallowEqual);
 
     const [error, setError] = useState(false);
-    // const [subscriptionAlbum, setSubscriptionAlbum] = useState(null);
     const [msg, setMsg] = useState(false);
-    const { user } = useSelector(postSelector, shallowEqual);
+
+    // const [subscriptionAlbum, setSubscriptionAlbum] = useState(null);
     // const [albumName,setAlbumName]=useState(false)
     // const [liked, setLiked] = useState(false);
     // const [trial, setTrial] = useState(false)
@@ -72,10 +78,10 @@ const Card = forwardRef(
 
       // subscriptionAlbum?.forEach((elem, index) => {
       //   if (elem.album === albumName) {
-      //      setMsg(true)
+      //     setMsg(true);
       //     alert("han true");
       //   } else {
-      //     setMsg(false)
+      //     setMsg(false);
       //     alert("han false");
       //   }
       // });
@@ -165,7 +171,7 @@ const Card = forwardRef(
             className={classes.cardImage}
             style={{ width: 280, height: 280 }}
           >
-            <Image src={url} alt="" width={280} height={280} />
+            <Image src={url} alt={url} width={280} height={280} />
           </div>
           <h3>{album?.Album_Name}</h3>
         </div>
