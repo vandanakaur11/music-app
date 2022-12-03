@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import AudioPlayer from "react-h5-audio-player";
+// import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import style from "./../../../styles/global.module.scss";
@@ -15,15 +15,19 @@ import {
   setSong,
   setSongs,
 } from "./../../store/musicReducer";
+// import MPDFile from "./../../../480p_out.mpd";
 import classes from "./AlbumPage.module.css";
 // import shaka from "shaka-player/dist/shaka-player.ui";
 import Hls from "hls.js";
 import plyr from "plyr";
+import { useRef } from "react";
+// import { decrypt, encrypt } from "react-crypt-gsm";
+// import AsTheDeerPants1Prelude from "./../../../assets/1 - Love Divine 1/01 As The Deer Pants - 1. Prelude/01 As The Deer Pants - 1. Prelude.m3u8";
 
 const postSelector = (state) => state.music;
 
 const AlbumPage = ({ songs, album }) => {
-  // console.log("AlbumPage >>>>>>>>");
+  // console.log("AlbumPage Component >>>>>>>>");
 
   // console.log("AlbumPage songs >>>>>>>>>>>>>", songs);
   // console.log("AlbumPage album >>>>>>>>>>>>>", album);
@@ -53,8 +57,8 @@ const AlbumPage = ({ songs, album }) => {
   const [loadingForAlbum, setLoadingForAlbum] = useState(false);
   // const [lockedSongs,setLockedSongs]=useState(false)
 
-  const audioPlayer = useRef();
   // const audio = useRef();
+  const audioPlayer = useRef();
   // const audioContainer = useRef();
 
   // seperate each song file
@@ -84,6 +88,32 @@ const AlbumPage = ({ songs, album }) => {
     // console.log("LOOOOOCEKD SOONGS===>",lockedSongs)
 
     currentSongIndex++;
+
+    // let curr_track = document.createElement("audio");
+    // var oReq = new XMLHttpRequest();
+    // oReq.open("GET", "http://localhost:3000/audio", true);
+    // oReq.responseType = "arraybuffer";
+    // oReq.onload = function (oEvent) {
+    //   xor();
+    // };
+    // oReq.send();
+    // function xor() {
+    //   // convert arrayBuffer to regular Array
+    //   const arr = oReq.response;
+    //   var byteArray = new Uint8Array(arr);
+    //   // obtain encryption key
+    //   let key = byteArray[byteArray.length - 1];
+    //   // use key to decrypt contents
+    //   byteArray = byteArray.map((x) => x ^ key).map((x) => ~x);
+    //   // restore key
+    //   byteArray[byteArray.length - 1] = key;
+    //   // convert byteArray to Blob
+    //   const blob = new Blob([byteArray], { type: "audio/mp3" });
+    //   // create playable URL from Blob object
+    //   const url = URL.createObjectURL(blob); // memory leak possible!
+    //   curr_track.src = url;
+    //   curr_track.load();
+    // }
 
     if (currentSongIndex < songArray.length) {
       if (typeof window !== "undefined") {
@@ -143,31 +173,94 @@ const AlbumPage = ({ songs, album }) => {
     //  ====== testing song url =====
     // hls.loadSource("http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8");
 
-    if (Hls.isSupported() && audioPlayer) {
-      const streamURL =
-        "https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8";
+    if (Hls.isSupported()) {
+      // const streamURL = "http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8";
+      // const streamURL =
+      //   "https://musicfilesforianmulder.s3.us-west-1.amazonaws.com/uploads/audio/8+-+Christmas/09+The+Son+of+Mary/09+The+Son+of+Mary.m3u8";
+      // const streamURL =
+      // "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads1/audio/1+-+Love+Divine+1/01+As+The+Deer+Pants+-+1.+Prelude/01+As+The+Deer+Pants+-+1.+Prelude.m3u8";
+      // const streamURL = AsTheDeerPants1Prelude;
       // const streamURL =
       //   "https://media.hungama.com/c/4/da0/297/91645121/91645121_128.mp3?SfwwOZGLxph0jHNlcBJ3wi42ilZKBdLuf-hVhjqLbTw7HkoFaQhlxrDOX319TjloxAO8bHtWmonW4nhZdHlN3cLbENvuf9VzIgsZewyVizXn8XdkDw_yyzVSJlc0npF96zP7Lw";
+
       // let audio = audioPlayer;
+      // const streamUrl = singleSong;
+
       const hls = new Hls();
+
       hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-        console.log("video and hls.js are now bound together !");
+        // console.log("video and hls.js are now bound together !");
       });
       hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-        console.log(
-          "manifest loaded, found " + data.levels.length + " quality level"
-        );
+        // console.log(
+        //   "manifest loaded, found " + data.levels.length + " quality level"
+        // );
       });
+
       // console.log("streamURL >>>>>>>>>>>", streamURL);
-      hls.loadSource(streamURL);
+
+      // hls.loadSource(require("./../../../mediaFilePlaylist.m3u8"));
+      // hls.loadSource(MPDFile);
+      // hls.loadSource(streamUrl);
+
+      // console.log("Hls.isSupported() singleSong >>>>>>>>>>>>", singleSong);
+
+      hls.loadSource(singleSong);
       // hls.attachMedia(audioPlayer);
-      hls.attachMedia(document.querySelector("#player"));
+      // hls.attachMedia(audio);
+      hls.attachMedia(document.querySelector("#audioPlayer"));
     }
 
     // console.log("audio===>", audio);
 
-    plyr.setup(document.querySelector("#player"));
-  }, [songArray]);
+    plyr.setup(document.querySelector("#audioPlayer"));
+  }, [singleSong]);
+
+  // const handleSingleSong = () => {
+  //   console.log("clicked..");
+
+  //   if (Hls.isSupported()) {
+  //     // const streamURL = "http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8";
+  //     // const streamURL =
+  //     //   "https://musicfilesforianmulder.s3.us-west-1.amazonaws.com/uploads/audio/8+-+Christmas/09+The+Son+of+Mary/09+The+Son+of+Mary.m3u8";
+  //     // const streamURL =
+  //     // "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads1/audio/1+-+Love+Divine+1/01+As+The+Deer+Pants+-+1.+Prelude/01+As+The+Deer+Pants+-+1.+Prelude.m3u8";
+  //     // const streamURL = AsTheDeerPants1Prelude;
+  //     // const streamURL =
+  //     //   "https://media.hungama.com/c/4/da0/297/91645121/91645121_128.mp3?SfwwOZGLxph0jHNlcBJ3wi42ilZKBdLuf-hVhjqLbTw7HkoFaQhlxrDOX319TjloxAO8bHtWmonW4nhZdHlN3cLbENvuf9VzIgsZewyVizXn8XdkDw_yyzVSJlc0npF96zP7Lw";
+
+  //     // let audio = audioPlayer;
+  //     const streamUrl = singleSong;
+
+  //     const hls = new Hls();
+  //     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+  //       console.log("video and hls.js are now bound together !");
+  //     });
+  //     hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+  //       console.log(
+  //         "manifest loaded, found " + data.levels.length + " quality level"
+  //       );
+  //     });
+
+  //     // console.log("streamURL >>>>>>>>>>>", streamURL);
+
+  //     // hls.loadSource(require("./../../../mediaFilePlaylist.m3u8"));
+  //     // hls.loadSource(MPDFile);
+  //     hls.loadSource(streamUrl);
+  //     // hls.loadSource(singleSong);
+  //     // hls.attachMedia(audioPlayer);
+  //     // hls.attachMedia(audio);
+  //     // hls.attachMedia(document.querySelector("#audioPlayer"));
+  //   }
+
+  //   // console.log("audio===>", audio);
+
+  //   plyr.setup(document.querySelector("#audioPlayer"));
+  // };
+
+  // useEffect(() => {
+  //   setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
+  // }, [songArray]);
 
   useEffect(() => {
     let currentSongIndex;
@@ -218,6 +311,7 @@ const AlbumPage = ({ songs, album }) => {
           return ele;
         }
       });
+
       let stringifyArray = JSON.stringify(tempArr);
 
       if (typeof window !== "undefined") {
@@ -305,6 +399,12 @@ const AlbumPage = ({ songs, album }) => {
 
   if (!songs || !songs.length) return <h1>Loading...</h1>;
 
+  // console.log("single song", singleSong);
+
+  // now you can bind 'curr_track.play()' to some click-event
+
+  //testing mulder song
+
   return (
     <div className={classes.albums}>
       <Head>
@@ -352,23 +452,24 @@ const AlbumPage = ({ songs, album }) => {
           disableFetch
         />
         <div className={classes.albumsMainPlaylist}>
-          {songs?.map((albumSong, i) =>
-            songs?.length - 1 !== i ? (
-              <Fragment key={i}>
-                <MusicTracker
-                  currentTime={currentTime}
-                  setCurrentTime={setCurrentTime}
-                  albumSong={albumSong}
-                  order={i}
-                  songs={songs}
-                  setSongName={setSongName}
-                  trial={user?.hasOwnProperty("expiresIn")}
-                  setSongArray={setSongArray}
-                  setSingleSong={setSingleSong}
-                />
-                {/* <div className={classes.lyricsStyle}>Lyrics</div> */}
-              </Fragment>
-            ) : null
+          {songs?.map(
+            (albumSong, i) =>
+              songs?.length - 1 !== i && (
+                <Fragment key={i}>
+                  <MusicTracker
+                    currentTime={currentTime}
+                    setCurrentTime={setCurrentTime}
+                    albumSong={albumSong}
+                    order={i}
+                    songs={songs}
+                    setSongName={setSongName}
+                    trial={user?.hasOwnProperty("expiresIn")}
+                    setSongArray={setSongArray}
+                    setSingleSong={setSingleSong}
+                  />
+                  {/* <div className={classes.lyricsStyle}>Lyrics</div> */}
+                </Fragment>
+              )
           )}
         </div>
       </div>
@@ -402,18 +503,21 @@ const AlbumPage = ({ songs, album }) => {
         <div className={style.trash}></div>
         <audio
           preload="true"
-          id="player"
+          id="audioPlayer"
           ref={audioPlayer}
           controls
-          crossOrigin
-          // src="https://stream.ram.radio/audio/ram.stream_aac/playlist.m3u8"
-          // src="https://media.hungama.com/c/4/150/9e6/90543863/90543863_128.mp3?Ei-nJOcOeWpH8ibXh5JHrH-CHx6ml2paMACrWpp90Gpmwc7csyG1rx-tGEVI3UPW6n_K817PbppBlOZBFtuOG-_-d3nZ5LSDTz3Wq9MeOXqUgdX0GnZ5s_B5kVU7ZlKe9kXZvg"
+          crossOrigin="true"
+          src={singleSong}
+          autoPlay="true"
         ></audio>
         {/* <AudioPlayer
+          preload="true"
+          id="audioPlayer"
           className={style.player}
           progressJumpStep={3000}
           src={singleSong}
-          onEnded={(e) => onEndSong()}
+          // src="https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads1/audio/8+-+Christmas/09+The+Son+of+Mary/09+The+Son+of+Mary.m3u8"
+          onEnded={(e) => onEndSong(e)}
         /> */}
       </div>
 

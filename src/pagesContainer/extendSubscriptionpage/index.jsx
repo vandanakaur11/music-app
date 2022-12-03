@@ -55,8 +55,8 @@ const ExtendSubscription = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("clicked");
-    console.log("email >>>>>>>>>>", email);
+    // console.log("clicked");
+    // console.log("email >>>>>>>>>>", email);
 
     setLoading(true);
 
@@ -67,7 +67,7 @@ const ExtendSubscription = () => {
 
       let { data } = await api.patch(`/api/extend-subscription/${email}`, body);
 
-      console.log("data >>>>>>>>>>>>>", data);
+      // console.log("data >>>>>>>>>>>>>", data);
 
       if (data) {
         if (typeof window !== "undefined") {

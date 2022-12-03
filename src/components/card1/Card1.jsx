@@ -2,8 +2,8 @@ import Image from "next/image";
 import classes from "./Card1.module.css";
 
 const Card1 = ({ title, album, url, disableFetch }) => {
-  console.log("album >>>>>>>>>>>>>>", album);
-  console.log("url >>>>>>>>>>>>>>", url);
+  // console.log("album >>>>>>>>>>>>>>", album);
+  // console.log("url >>>>>>>>>>>>>>", url);
 
   return (
     <>

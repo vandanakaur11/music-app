@@ -28,8 +28,14 @@ const MusicTracker = ({
   setSingleSong,
 }) => {
   // console.log("MusicTracker albumSong >>>>>>>>>>", albumSong);
-
   // console.log("MusicTracker songs", songs);
+  // console.log("MusicTracker order", order);
+  // console.log("MusicTracker currentTime", currentTime);
+  // console.log("MusicTracker setCurrentTime", setCurrentTime);
+  // console.log("MusicTracker trial", trial);
+  // console.log("MusicTracker setSongName", setSongName);
+  // console.log("MusicTracker setSongArray", setSongArray);
+  console.log("MusicTracker setSingleSong", setSingleSong);
 
   const { song, user, favourites, favouriteId } = useSelector(
     postSelector,
@@ -140,7 +146,7 @@ const MusicTracker = ({
     setMyCommutativeLength(count);
   }
 
-  function songJump(e) {
+  const songJump = (e) => {
     // e.stopPropagation();
     // console.log("songJump >>>>>>>>>>>>>");
 
@@ -174,12 +180,13 @@ const MusicTracker = ({
 
     // console.log("songArray[0] >>>>>>>>>>>>>", songArray[0]);
 
-    setSingleSong(songArray[0]);
+    setSingleSong(songArray[0]?.Song_File);
     setSongArray(songArray);
-  }
+  };
 
   const handleChangeSong = () => {
-    console.log("clicked!!");
+    // console.log("clicked!!");
+    // handleSingleSong();
   };
 
   const handleLike = async (id) => {
@@ -202,6 +209,7 @@ const MusicTracker = ({
     // if (locked === true) {
     //   setLiked(false);
     // } else setLiked(!liked);
+
     if (lockedSongs === true) {
       setLiked(false);
     } else setLiked(!liked);
@@ -240,7 +248,7 @@ const MusicTracker = ({
   }, []);
 
   return (
-    <div onClick={() => handleChangeSong()}>
+    <div onClick={handleChangeSong}>
       <div
         ref={albumSong?._id === song?._id ? trackRef : null}
         // onClick={isMobile ? songJump : songHandler}

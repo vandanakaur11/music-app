@@ -409,26 +409,26 @@ function MusicPlayer({
       {showDetails && (
         <div className={classes.albumsMusicDetails}>
           {/* <Box sx={{ width: "100%" }}>
-                        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                            <Tabs
-                                value={isLyrics}
-                                onChange={handleIsLyrics}
-                                aria-label="basic tabs example"
-                                textColor="inherit"
-                                indicatorColor="primary"
-                                centered
-                            >
-                                <Tab label="Song Lyrics" style={{ marginRight: "10px", padding: "10px" }} {...a11yProps(1)} />
-                                <Tab label="Album Details" style={{ padding: "10px" }} {...a11yProps(0)} />
-                            </Tabs>
-                        </Box>
-                        <TabPanel value={isLyrics} index={0}>
-                            <span className={classes.lyricsText}>{song?.Song_Lyrics}</span>
-                        </TabPanel>
-                        <TabPanel value={isLyrics} index={1}>
-                            <span className={classes.lyricsText}>{album?.Song_Desc}</span>
-                        </TabPanel>
-                    </Box> */}
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <Tabs
+                      value={isLyrics}
+                      onChange={handleIsLyrics}
+                      aria-label="basic tabs example"
+                      textColor="inherit"
+                      indicatorColor="primary"
+                      centered
+                  >
+                      <Tab label="Song Lyrics" style={{ marginRight: "10px", padding: "10px" }} {...a11yProps(1)} />
+                      <Tab label="Album Details" style={{ padding: "10px" }} {...a11yProps(0)} />
+                  </Tabs>
+              </Box>
+              <TabPanel value={isLyrics} index={0}>
+                  <span className={classes.lyricsText}>{song?.Song_Lyrics}</span>
+              </TabPanel>
+              <TabPanel value={isLyrics} index={1}>
+                  <span className={classes.lyricsText}>{album?.Song_Desc}</span>
+              </TabPanel>
+          </Box> */}
           <div className={classes.tabsWrapper}>
             <div
               className={`${classes.tab} ${

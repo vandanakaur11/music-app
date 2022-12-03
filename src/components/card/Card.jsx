@@ -26,6 +26,8 @@ const Card = forwardRef(
     // console.log("disableFetch >>>>>>>>>>>>>>", disableFetch);
     // console.log("setLoading >>>>>>>>>>>>>>", setLoading);
 
+    // console.log("Card component >>>>>>>>");
+
     const { user } = useSelector(postSelector, shallowEqual);
 
     const [error, setError] = useState(false);
@@ -98,9 +100,18 @@ const Card = forwardRef(
       // console.log(loading)
 
       if (user?.hasOwnProperty("expiresIn")) {
+        // console.log(
+        //   "`/album/${album?.Album_Name}` >>>>>>>>>>",
+        //   `/album/${album?.Album_Name}`
+        // );
+
         //  index===0
         msg ? route.push(`/album/${album?.Album_Name}`) : handleExpireAlert();
       } else {
+        // console.log(
+        //   "`/album/${album?.Album_Name}` >>>>>>>>>>",
+        //   `/album/${album?.Album_Name}`
+        // );
         route.push(`/album/${album?.Album_Name}`);
       }
 

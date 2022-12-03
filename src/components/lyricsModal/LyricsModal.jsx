@@ -141,7 +141,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
 
-  console.log("onClose >>>>>>>>>>", onClose);
+  // console.log("onClose >>>>>>>>>>", onClose);
 
   return (
     <DialogTitle

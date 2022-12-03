@@ -95,19 +95,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 const postSelector = (state) => state.music;
 
-function TemporaryDrawer() {
+const TemporaryDrawer = () => {
+  // console.log("Side Drawer component >>>>>>>>");
+
   const dispatch = useDispatch();
+
   const { user, favourites } = useSelector(postSelector, shallowEqual);
+
   // console.log(favourites)
+
   const route = useRouter();
   const classes = useStyles();
+
   const [state, setState] = React.useState({
     // top: false,
     // left: false,
     // bottom: false,
     right: false,
   });
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -122,7 +128,7 @@ function TemporaryDrawer() {
 
   function handleClick(album, index) {
     // console.log(album, index);
-     setLoading(true)
+    setLoading(true);
 
     dispatch(setFavouriteId(album?._id));
 
@@ -131,8 +137,12 @@ function TemporaryDrawer() {
       route.replace("/login");
       return;
     }
-    
-    
+
+    console.log(
+      "/album/${item.albumName} >>>>>>>>>>",
+      `/album/${album?.Album_Name}`
+    );
+
     route.push(`/album/${album?.Album_Name}`);
   }
 
@@ -204,5 +214,5 @@ function TemporaryDrawer() {
       ))}
     </div>
   );
-}
+};
 export default React.memo(TemporaryDrawer);

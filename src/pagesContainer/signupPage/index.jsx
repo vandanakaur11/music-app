@@ -28,8 +28,8 @@ const SignupPage = () => {
   const { email: userEmail, access_code } = router.query;
 
   useEffect(() => {
-    console.log("userEmail >>>>>>>>", userEmail);
-    console.log("access_code >>>>>>>>", access_code);
+    // console.log("userEmail >>>>>>>>", userEmail);
+    // console.log("access_code >>>>>>>>", access_code);
 
     setEmail(userEmail !== "" ? userEmail : "");
     setVerificationCode(access_code !== "" ? access_code : "");
@@ -55,11 +55,11 @@ const SignupPage = () => {
         code: verificationCode,
       };
 
-      console.log("payload >>>>>>>>>", payload);
+      // console.log("payload >>>>>>>>>", payload);
 
       const { data } = await api.post("/api/signup", payload);
 
-      console.log("data >>>>>>>>", data);
+      // console.log("data >>>>>>>>", data);
 
       if (data) {
         if (typeof window !== "undefined") {
