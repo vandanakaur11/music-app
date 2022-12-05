@@ -33,14 +33,16 @@ module.exports = (phase) => {
     reactStrictMode: true,
     images: {
       domains: [
-        "ian-mulder-app-staging.herokuapp.com",
+        // "ian-mulder-app-staging.herokuapp.com",
+        "music-app-backend-alpha.vercel.app",
         // "musicfilesforheroku.s3.us-west-1.amazonaws.com",
         "musicfilesforianmulder.s3.us-west-1.amazonaws.com",
       ],
     },
     // images: { domains: ["localhost", "musicfilesforheroku.s3.us-west-1.amazonaws.com"] },
     env: {
-      base_url: "https://ian-mulder-app-staging.herokuapp.com",
+      // base_url: "https://ian-mulder-app-staging.herokuapp.com",
+      base_url: "https://music-app-backend-alpha.vercel.app",
       // media_url:
       //   "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads",
       media_url:
