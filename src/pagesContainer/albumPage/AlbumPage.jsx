@@ -1,6 +1,8 @@
+import Hls from "hls.js";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { Fragment, useEffect, useState } from "react";
+import plyr from "plyr";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 // import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
@@ -15,12 +17,7 @@ import {
   setSong,
   setSongs,
 } from "./../../store/musicReducer";
-// import MPDFile from "./../../../480p_out.mpd";
 import classes from "./AlbumPage.module.css";
-// import shaka from "shaka-player/dist/shaka-player.ui";
-import Hls from "hls.js";
-import plyr from "plyr";
-import { useRef } from "react";
 // import { decrypt, encrypt } from "react-crypt-gsm";
 // import AsTheDeerPants1Prelude from "./../../../assets/1 - Love Divine 1/01 As The Deer Pants - 1. Prelude/01 As The Deer Pants - 1. Prelude.m3u8";
 
@@ -508,7 +505,7 @@ const AlbumPage = ({ songs, album }) => {
           controls
           crossOrigin="true"
           src={singleSong}
-          autoPlay="true"
+          autoPlay={true}
         ></audio>
         {/* <AudioPlayer
           preload="true"

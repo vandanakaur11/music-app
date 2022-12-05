@@ -7978,10 +7978,6 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-"mp3-to-hls@github:huhani/mp3-to-hls":
-  version "0.0.1"
-  resolved "https://codeload.github.com/huhani/mp3-to-hls/tar.gz/76796f06aacb3a32ecffb7baca603c21ca256e93"
-
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
