@@ -10,7 +10,7 @@ import classes from "./HistoryPage.module.css";
 const postSelector = (state) => state.music;
 
 const HistoryPage = ({ userEmail }) => {
-  console.log("HistoryPage >>>>>>>>");
+  // console.log("HistoryPage >>>>>>>>");
 
   const { user } = useSelector(postSelector, shallowEqual);
   const route = useRouter();
@@ -53,10 +53,10 @@ const HistoryPage = ({ userEmail }) => {
                   className={`${classes.musicTrack}`}
                   key={index}
                   onClick={() => {
-                    console.log(
-                      "/album/${item.albumName} >>>>>>>>",
-                      `/album/${item.albumName}`
-                    );
+                    // console.log(
+                    //   "/album/${item.albumName} >>>>>>>>",
+                    //   `/album/${item.albumName}`
+                    // );
                     route.push(`/album/${item.albumName}`);
                   }}
                 >

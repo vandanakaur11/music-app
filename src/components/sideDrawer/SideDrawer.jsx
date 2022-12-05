@@ -138,10 +138,10 @@ const TemporaryDrawer = () => {
       return;
     }
 
-    console.log(
-      "/album/${item.albumName} >>>>>>>>>>",
-      `/album/${album?.Album_Name}`
-    );
+    // console.log(
+    //   "/album/${item.albumName} >>>>>>>>>>",
+    //   `/album/${album?.Album_Name}`
+    // );
 
     route.push(`/album/${album?.Album_Name}`);
   }

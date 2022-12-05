@@ -23,7 +23,7 @@ const SignupPage = () => {
 
   const router = useRouter();
 
-  console.log("router.query", router.query);
+  // console.log("router.query", router.query);
 
   const { email: userEmail, access_code } = router.query;
 

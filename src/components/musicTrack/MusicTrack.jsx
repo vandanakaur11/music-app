@@ -35,7 +35,7 @@ const MusicTracker = ({
   // console.log("MusicTracker trial", trial);
   // console.log("MusicTracker setSongName", setSongName);
   // console.log("MusicTracker setSongArray", setSongArray);
-  console.log("MusicTracker setSingleSong", setSingleSong);
+  // console.log("MusicTracker setSingleSong", setSingleSong);
 
   const { song, user, favourites, favouriteId } = useSelector(
     postSelector,
