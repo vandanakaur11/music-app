@@ -18,16 +18,11 @@ import {
   setSongs,
 } from "./../../store/musicReducer";
 import classes from "./AlbumPage.module.css";
-// import { decrypt, encrypt } from "react-crypt-gsm";
-// import AsTheDeerPants1Prelude from "./../../../assets/1 - Love Divine 1/01 As The Deer Pants - 1. Prelude/01 As The Deer Pants - 1. Prelude.m3u8";
 
 const postSelector = (state) => state.music;
 
 const AlbumPage = ({ songs, album }) => {
   // console.log("AlbumPage Component >>>>>>>>");
-
-  // console.log("AlbumPage songs >>>>>>>>>>>>>", songs);
-  // console.log("AlbumPage album >>>>>>>>>>>>>", album);
 
   const { song, language, user, favouriteId } = useSelector(
     postSelector,
@@ -38,33 +33,23 @@ const AlbumPage = ({ songs, album }) => {
 
   const route = useRouter();
   const dispatch = useDispatch();
+
   const [currentTime, setCurrentTime] = useState(0);
   const [songName, setSongName] = useState("");
   const [albumName, setAlbumName] = useState("");
   const [pic, setPic] = useState("");
   const [lyrics, setLyrics] = useState("");
-  const [file, setFile] = useState("");
   const [singleSong, setSingleSong] = useState("");
   const [songArray, setSongArray] = useState([]);
-  const [time, setTime] = useState(1000);
-  const [showLyrics, setShowLyrics] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [loadingForAlbum, setLoadingForAlbum] = useState(false);
-  // const [lockedSongs,setLockedSongs]=useState(false)
 
-  // const audio = useRef();
   const audioPlayer = useRef();
-  // const audioContainer = useRef();
 
   // seperate each song file
   // console.log(pic)
-
-  // License and MDP For DRM Protected
-  // const licenseServer = "https://widevine-proxy.appspot.com/proxy";
-  // const mpdFile =
-  //   "https://dash.akamaized.net/dash264/TestCases/1c/qualcomm/2/MultiRate.mpd";
 
   const songFileArray = songs.map((ele, ind) => {
     let fileName = process.env.media_url.concat(ele.Song_File);
@@ -80,37 +65,9 @@ const AlbumPage = ({ songs, album }) => {
     if (typeof window !== "undefined") {
       // Perform localStorage action
       currentSongIndex = localStorage.getItem("currentSongIndex");
-      // setLockedSongs(localStorage.getItem("Locked Songs"));
     }
-    // console.log("LOOOOOCEKD SOONGS===>",lockedSongs)
 
     currentSongIndex++;
-
-    // let curr_track = document.createElement("audio");
-    // var oReq = new XMLHttpRequest();
-    // oReq.open("GET", "http://localhost:3000/audio", true);
-    // oReq.responseType = "arraybuffer";
-    // oReq.onload = function (oEvent) {
-    //   xor();
-    // };
-    // oReq.send();
-    // function xor() {
-    //   // convert arrayBuffer to regular Array
-    //   const arr = oReq.response;
-    //   var byteArray = new Uint8Array(arr);
-    //   // obtain encryption key
-    //   let key = byteArray[byteArray.length - 1];
-    //   // use key to decrypt contents
-    //   byteArray = byteArray.map((x) => x ^ key).map((x) => ~x);
-    //   // restore key
-    //   byteArray[byteArray.length - 1] = key;
-    //   // convert byteArray to Blob
-    //   const blob = new Blob([byteArray], { type: "audio/mp3" });
-    //   // create playable URL from Blob object
-    //   const url = URL.createObjectURL(blob); // memory leak possible!
-    //   curr_track.src = url;
-    //   curr_track.load();
-    // }
 
     if (currentSongIndex < songArray.length) {
       if (typeof window !== "undefined") {
@@ -144,47 +101,8 @@ const AlbumPage = ({ songs, album }) => {
     // console.log(`${process.env.media_url}/${songArray[0]?.Song_File}`)
     setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
 
-    // DRM Protected Setup
-    // let audio = audio.current;
-    // let audioContainer = audioContainer.current;
-
-    // console.log("audio >>>>>>>>>>", audio);
-    // console.log("audioContainer >>>>>>>>>>", audioContainer);
-
-    // let player = new shaka.Player(audio);
-
-    // const ui = new shaka.ui.Overlay(player, audioContainer, audio);
-    // const controls = ui.getControls();
-
-    // console.log("controls >>>>>>>>>", controls);
-
-    // console.log("Object.keys(shaka.ui) >>>>>>>>>>", Object.keys(shaka.ui));
-
-    // player.configure({
-    //   drm: {
-    //     servers: { "com.widevine.alpha": licenseServer },
-    //   },
-    // });
-
-    // let audio;
-    //  ====== testing song url =====
-    // hls.loadSource("http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8");
-
     if (Hls.isSupported()) {
-      // const streamURL = "http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8";
-      // const streamURL =
-      //   "https://musicfilesforianmulder.s3.us-west-1.amazonaws.com/uploads/audio/8+-+Christmas/09+The+Son+of+Mary/09+The+Son+of+Mary.m3u8";
-      // const streamURL =
-      // "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads1/audio/1+-+Love+Divine+1/01+As+The+Deer+Pants+-+1.+Prelude/01+As+The+Deer+Pants+-+1.+Prelude.m3u8";
-      // const streamURL = AsTheDeerPants1Prelude;
-      // const streamURL =
-      //   "https://media.hungama.com/c/4/da0/297/91645121/91645121_128.mp3?SfwwOZGLxph0jHNlcBJ3wi42ilZKBdLuf-hVhjqLbTw7HkoFaQhlxrDOX319TjloxAO8bHtWmonW4nhZdHlN3cLbENvuf9VzIgsZewyVizXn8XdkDw_yyzVSJlc0npF96zP7Lw";
-
-      // let audio = audioPlayer;
-      // const streamUrl = singleSong;
-
       const hls = new Hls();
-
       hls.on(Hls.Events.MEDIA_ATTACHED, function () {
         // console.log("video and hls.js are now bound together !");
       });
@@ -193,71 +111,12 @@ const AlbumPage = ({ songs, album }) => {
         //   "manifest loaded, found " + data.levels.length + " quality level"
         // );
       });
-
-      // console.log("streamURL >>>>>>>>>>>", streamURL);
-
-      // hls.loadSource(require("./../../../mediaFilePlaylist.m3u8"));
-      // hls.loadSource(MPDFile);
-      // hls.loadSource(streamUrl);
-
-      // console.log("Hls.isSupported() singleSong >>>>>>>>>>>>", singleSong);
-
       hls.loadSource(singleSong);
-      // hls.attachMedia(audioPlayer);
-      // hls.attachMedia(audio);
       hls.attachMedia(document.querySelector("#audioPlayer"));
     }
 
-    // console.log("audio===>", audio);
-
     plyr.setup(document.querySelector("#audioPlayer"));
   }, [singleSong]);
-
-  // const handleSingleSong = () => {
-  //   console.log("clicked..");
-
-  //   if (Hls.isSupported()) {
-  //     // const streamURL = "http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8";
-  //     // const streamURL =
-  //     //   "https://musicfilesforianmulder.s3.us-west-1.amazonaws.com/uploads/audio/8+-+Christmas/09+The+Son+of+Mary/09+The+Son+of+Mary.m3u8";
-  //     // const streamURL =
-  //     // "https://musicfilesforheroku.s3.us-west-1.amazonaws.com/uploads1/audio/1+-+Love+Divine+1/01+As+The+Deer+Pants+-+1.+Prelude/01+As+The+Deer+Pants+-+1.+Prelude.m3u8";
-  //     // const streamURL = AsTheDeerPants1Prelude;
-  //     // const streamURL =
-  //     //   "https://media.hungama.com/c/4/da0/297/91645121/91645121_128.mp3?SfwwOZGLxph0jHNlcBJ3wi42ilZKBdLuf-hVhjqLbTw7HkoFaQhlxrDOX319TjloxAO8bHtWmonW4nhZdHlN3cLbENvuf9VzIgsZewyVizXn8XdkDw_yyzVSJlc0npF96zP7Lw";
-
-  //     // let audio = audioPlayer;
-  //     const streamUrl = singleSong;
-
-  //     const hls = new Hls();
-  //     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-  //       console.log("video and hls.js are now bound together !");
-  //     });
-  //     hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-  //       console.log(
-  //         "manifest loaded, found " + data.levels.length + " quality level"
-  //       );
-  //     });
-
-  //     // console.log("streamURL >>>>>>>>>>>", streamURL);
-
-  //     // hls.loadSource(require("./../../../mediaFilePlaylist.m3u8"));
-  //     // hls.loadSource(MPDFile);
-  //     hls.loadSource(streamUrl);
-  //     // hls.loadSource(singleSong);
-  //     // hls.attachMedia(audioPlayer);
-  //     // hls.attachMedia(audio);
-  //     // hls.attachMedia(document.querySelector("#audioPlayer"));
-  //   }
-
-  //   // console.log("audio===>", audio);
-
-  //   plyr.setup(document.querySelector("#audioPlayer"));
-  // };
-
-  // useEffect(() => {
-  //   setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
-  // }, [songArray]);
 
   useEffect(() => {
     let currentSongIndex;
@@ -270,7 +129,6 @@ const AlbumPage = ({ songs, album }) => {
     setAlbumName(songArray[currentSongIndex]?.Album_Name);
     setSongName(songArray[currentSongIndex]?.Song_Name);
     setLyrics(songArray[currentSongIndex]?.Song_Lyrics);
-
     setPic(
       `${process.env.media_url}/`.concat(
         songArray[currentSongIndex]?.Album_Image
@@ -411,24 +269,6 @@ const AlbumPage = ({ songs, album }) => {
         <meta name="description" content={song?.Song_Name} />
       </Head>
       <br />
-      <div
-        style={{
-          position: "fixed",
-          top: "50%",
-          right: "44vw",
-          left: "44vw",
-
-          // left: 0,
-          // width: "100%",
-          // height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 100,
-        }}
-      >
-        {/* <ClipLoader color="red" loading={loadingForAlbum} size={"10vw"} /> */}
-      </div>
       <h4 style={{ color: "white", textAlign: "center" }}>STREAMING</h4>
       <h1>{song?.Album_Name}</h1>
       <LyricsModal
@@ -505,6 +345,7 @@ const AlbumPage = ({ songs, album }) => {
           controls
           crossOrigin="true"
           src={singleSong}
+          className={classes.audioPlayer}
           autoPlay={true}
         ></audio>
         {/* <AudioPlayer

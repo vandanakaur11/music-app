@@ -146,8 +146,7 @@ const MusicTracker = ({
     setMyCommutativeLength(count);
   }
 
-  const songJump = (e) => {
-    // e.stopPropagation();
+  function songJump() {
     // console.log("songJump >>>>>>>>>>>>>");
 
     // if (locked) return;
@@ -182,7 +181,7 @@ const MusicTracker = ({
 
     setSingleSong(songArray[0]?.Song_File);
     setSongArray(songArray);
-  };
+  }
 
   const handleChangeSong = () => {
     // console.log("clicked!!");
@@ -244,7 +243,6 @@ const MusicTracker = ({
         JSON.parse(localStorage.getItem("subscriptionSongDetails"))
       );
     }
-    // console.log("");
   }, []);
 
   return (
@@ -281,7 +279,7 @@ const MusicTracker = ({
               {albumSong?.Song_Lyrics}
               </marquee>
           ) : ( */}
-          <h4 onClick={(e) => songJump(e)}>{albumSong?.Song_Name}</h4>
+          <h4 onClick={songJump}>{albumSong?.Song_Name}</h4>
           {/* )} */}
         </div>
         <div></div>

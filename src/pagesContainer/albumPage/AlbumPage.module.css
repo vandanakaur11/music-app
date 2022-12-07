@@ -101,6 +101,87 @@
   color: #382b11;
 }
 
+
+/* .audioPlayer::-webkit-media-controls-play-button{
+  color: #ffffff!important;
+  border: 2px solid purple!important;
+  background-color: #ffffff;
+  border-radius: 50%;
+} */
+/* .audioPlayer{
+ 
+  width: 62%;
+  margin-top: 15px;
+  background-color: black!important;
+  color: #ffffff;
+}
+.audioPlayer::-webkit-media-controls-panel{
+
+  color: #ffffff;
+  border: 1px solid #ffffff!important;
+}
+.audioPlayer::-webkit-media-controls-mute-button{
+  background-color: #ffffff;
+  color: #ffffff!important;
+   border-radius: 50%;
+}
+.audioPlayer::-webkit-media-controls-volume-slider {
+  background-color: red!important;
+}
+.audioPlayer::-webkit-media-controls-volume-control-container.closed {
+background-color: red;
+ color: rgb(29, 11, 29)!important;
+}
+
+.audioPlayer::-webkit-media-controls-volume-control-container{
+
+  color: purple!important;
+} */
+/* .audioPlayer::-webkit-internal-media-controls-button-hover-background{
+  background-color: red!important;
+  color: #ffffff!important;
+} */
+.audioPlayer::-webkit-media-controls-current-time-display{
+  color: #ffffff;
+  margin-left: 15px;
+  
+}
+.audioPlayer::-webkit-media-controls-time-remaining-display{
+  color: #ffffff;
+}
+
+.audioPlayer::-webkit-media-controls-enclosure{
+  background-color: black;
+  
+}
+
+.audioPlayer::-webkit-media-controls-play-button{
+  background-color: #fff;
+  border-radius: 50%;
+  /* color: #ffffff; */
+
+}
+.audioPlayer{
+  width: 72%;
+  margin-top: 15px;
+  color: #ffffff;
+}
+.audioPlayer::-webkit-media-controls-timeline{
+  background-color: #ffffff;
+  border-radius: 20px;
+  margin:0 20px;
+}
+.audioPlayer::-webkit-media-controls-volume-control-container{
+  background-color: #ffffff;
+  border-radius: 20px;
+  /* border: 3px solid purple; */
+}
+.audioPlayer::-webkit-internal-media-controls-overflow-button{
+   background-color: #ffffff;
+   color: #ffffff;
+}
+
+
 @media (max-width: 1150px) {
   .albumsMain {
     margin-top: 2rem;
@@ -113,4 +194,12 @@
   .albumsMainPlaylist {
     padding: 0;
   }
+}
+
+@media(max-width:540px){
+  .audioPlayer{
+    width: 90%;
+    /* border: 1px solid red; */
+  }
+ 
 }
