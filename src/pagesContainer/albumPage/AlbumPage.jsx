@@ -42,6 +42,7 @@ const AlbumPage = ({ songs, album }) => {
   const [singleSong, setSingleSong] = useState("");
   const [songArray, setSongArray] = useState([]);
   const [open, setOpen] = useState(false);
+  const [songPlay, setSongPlay] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -100,6 +101,7 @@ const AlbumPage = ({ songs, album }) => {
   useEffect(() => {
     // console.log(`${process.env.media_url}/${songArray[0]?.Song_File}`)
     setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
+    setSongPlay(true);
 
     if (Hls.isSupported()) {
       const hls = new Hls();
@@ -346,7 +348,7 @@ const AlbumPage = ({ songs, album }) => {
           crossOrigin="true"
           src={singleSong}
           className={classes.audioPlayer}
-          autoPlay={true}
+          autoPlay={songPlay}
         ></audio>
         {/* <AudioPlayer
           preload="true"
