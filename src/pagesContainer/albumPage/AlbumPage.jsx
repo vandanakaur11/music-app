@@ -33,21 +33,27 @@ const AlbumPage = ({ songs, album }) => {
 
   const route = useRouter();
   const dispatch = useDispatch();
-
   const [currentTime, setCurrentTime] = useState(0);
   const [songName, setSongName] = useState("");
   const [albumName, setAlbumName] = useState("");
   const [pic, setPic] = useState("");
   const [lyrics, setLyrics] = useState("");
+  const [file, setFile] = useState("");
   const [singleSong, setSingleSong] = useState("");
   const [songArray, setSongArray] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [songPlay, setSongPlay] = useState(false);
-
+  const [time, setTime] = useState(1000);
+  const [showLyrics, setShowLyrics] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [loadingForAlbum, setLoadingForAlbum] = useState(false);
 
+  const [songPlay, setSongPlay] = useState(false);
+  // const [lockedSongs,setLockedSongs]=useState(false)
+
+  // const audio = useRef();
   const audioPlayer = useRef();
+  // const audioContainer = useRef();
 
   // seperate each song file
   // console.log(pic)

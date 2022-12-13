@@ -112,6 +112,7 @@ const ResetPassword = () => {
       </h1>
 
       {/* {loading && <h3>Loading..</h3>} */}
+
       {loading && (
         <div className={classes.loading}>
           <h1 style={{ fontSize: "2.5rem" }}>Loading...</h1>
@@ -119,6 +120,11 @@ const ResetPassword = () => {
       )}
 
       {error && <h3 style={{ color: "red" }}>{error}</h3>}
+
+      <p>
+        You just received a code via email. Please enter it below and set your
+        desired password.
+      </p>
 
       <div className={classes.input}>
         <label htmlFor="">
