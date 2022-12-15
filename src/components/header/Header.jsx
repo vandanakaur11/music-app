@@ -3,20 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { setSong, setSongs, setUser } from "../../store/musicReducer";
 import SideDrawer from "../sideDrawer/SideDrawer";
-import classes from "./Header.module.css";
 import api from "./../../../services/api";
+import classes from "./Header.module.css";
 
 const postSelector = (state) => state.music;
 
 function Header() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { user, language } = useSelector(postSelector, shallowEqual);
 
   const [userInfo, setUserInfo] = useState(user);
   const [expireDays, setExpireDays] = useState(null);
+  const [error, setError] = useState("");
 
   // let expiringDays;
   // console.log("stateExpiringDays", expireDays);
@@ -35,23 +38,37 @@ function Header() {
         setUserInfo({ ...user, expiringDays: data?.data?.days });
       }
     } catch (err) {
-      console.error("err >>>>>>>>>>", err);
+      console.error(
+        "err?.response?.data?.message >>>>>>>>>>",
+        err?.response?.data?.message
+      );
+
+      console.log("header fetchExpiringDays user  >>>>>>>", user);
 
       if (
         err?.response?.data?.message === "Your trial period has been expired!"
       ) {
-        const trialObj = {
-          expired: true,
-          message: err?.response?.data?.message,
-          email: err?.response?.data?.data?.user,
-        };
-
         if (typeof window !== "undefined") {
           // Perform localStorage action
-          localStorage.setItem("trial-info", JSON.stringify(trialObj));
-        }
+          localStorage.removeItem("songArray");
+          localStorage.removeItem("Expiring-Days-Api");
+          localStorage.removeItem("subscriptionSongDetails");
+          localStorage.removeItem("music-app-credentials");
 
-        router.push("/extend-subscription");
+          dispatch(setSong({}));
+          dispatch(setSongs([]));
+          dispatch(setUser(null));
+
+          const trialObj = {
+            expired: true,
+            message: err?.response?.data?.message,
+            email: err?.response?.data?.data?.user,
+          };
+
+          localStorage.setItem("trial-info", JSON.stringify(trialObj));
+
+          router.replace("/extend-subscription");
+        }
       } else {
         setError(err?.response?.data?.message);
 
@@ -59,43 +76,48 @@ function Header() {
           setError("");
         }, 3000);
       }
+
+      /* if (typeof window !== "undefined") {
+        // Perform localStorage action
+
+        if (localStorage.getItem("trial-info")) {
+          localStorage.removeItem("songArray");
+          localStorage.removeItem("Expiring-Days-Api");
+          localStorage.removeItem("subscriptionSongDetails");
+          localStorage.removeItem("music-app-credentials");
+
+          dispatch(setSong({}));
+          dispatch(setSongs([]));
+          dispatch(setUser(null));
+        } else {
+          const trialObj = {
+            expired: true,
+            message: err?.response?.data?.message,
+            email: err?.response?.data?.data?.user,
+          };
+
+          if (typeof window !== "undefined") {
+            // Perform localStorage action
+            localStorage.setItem("trial-info", JSON.stringify(trialObj));
+          }
+        }
+
+        router.replace("/extend-subscription");
+      }
+
+      setError(err?.response?.data?.message);
+
+      setTimeout(() => {
+        setError("");
+      }, 3000); */
     }
   };
 
   useEffect(() => {
-    // if (typeof window !== "undefined") {
-    //   expiringDays = JSON.parse(localStorage.getItem("Expiring-Days-Api"));
-    // }
-    // console.log("ExpiringDays-from-Api=====>", expiringDays?.data?.days);
-
-    // if (user) {
-    //   setUserInfo({ ...user, expiringDays: expiringDays?.data?.days });
-    // }
-
-    // const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
-    // console.log("LoggedIn Users ===>", user);
-    // console.log("LoggedIn Users ===>", newUser);
-
-    if (userInfo?.expiresIn < 0) {
-      router.replace("/extendSubscription");
-    } else if (user) {
-      // if (!newUser?.expiresIn) {
+    if (user) {
       fetchExpiringDays();
     }
-    // }
   }, [user]);
-
-  // console.log("Header user >>>>>>>>>>>>", userInfo);
-  // console.log(
-  //   "Header userInfo.expiringDays >>>>>>>>>>>>",
-  //   userInfo?.expiringDays
-  // );
-
-  // console.log(
-  //   "Header user user?.data?.user?.subscriptionEndDate >>>>>>",
-  //   userInfo?.data?.user?.subscriptionEndDate
-  // );
-  //  console.log("ExpiringDays-from-Api=====>", userInfo?.expiringDays);
 
   const [open, setOpen] = useState(false);
   const [sideBar, setShowSidebar] = useState(false);

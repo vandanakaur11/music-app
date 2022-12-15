@@ -1,5 +1,5 @@
 import Footer from "../../src/components/footer";
-import ExtendSubscription from "../../src/pagesContainer/extendSubscriptionpage";
+import ExtendSubscription from "./../../src/pagesContainer/extendSubscriptionpage";
 
 const index = () => {
   return (

@@ -12,6 +12,12 @@ const postSelector = (state) => state.music;
 const SignupPage = () => {
   // console.log("Auth SignupPage >>>>>>>>");
 
+  const router = useRouter();
+
+  console.log("router.query", router.query);
+
+  const { email: userEmail, access_code } = router.query;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
@@ -20,12 +26,6 @@ const SignupPage = () => {
   const [checkBox, setCheckBox] = useState(false);
 
   const { language, user } = useSelector(postSelector, shallowEqual);
-
-  const router = useRouter();
-
-  // console.log("router.query", router.query);
-
-  const { email: userEmail, access_code } = router.query;
 
   useEffect(() => {
     // console.log("userEmail >>>>>>>>", userEmail);
@@ -149,7 +149,7 @@ const SignupPage = () => {
 
       <div className={styles.input}>
         <label>
-          {language.title === "nl" ? "Verificatie code" : "Verification Code"}
+          {language.title === "nl" ? "Toegangscode" : "Access Code"}
         </label>
         <input
           value={verificationCode}
@@ -162,8 +162,8 @@ const SignupPage = () => {
           maxLength={36}
           placeholder={
             language.title === "nl"
-              ? "Voer verificatiecode in"
-              : "Enter Verification Code"
+              ? "Voer toegangscode in"
+              : "Enter Access Code"
           }
         />
       </div>

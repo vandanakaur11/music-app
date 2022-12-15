@@ -11,7 +11,7 @@ import classes from "./LoginPage.module.css";
 const postSelector = (state) => state.music;
 
 const LoginPage = () => {
-  // console.log("Auth LoginPage >>>>>>>>");
+  console.log("LoginPage >>>>>>>>");
 
   const { language } = useSelector(postSelector, shallowEqual);
 
@@ -27,6 +27,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Perform localStorage action
+
       setMessage(localStorage.getItem("success"));
 
       localStorage.removeItem("userEmail");
@@ -42,21 +43,18 @@ const LoginPage = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Perform localStorage action
-      const userData = localStorage.getItem("music-app-credentials");
-
-      if (userData) {
+      if (localStorage.getItem("music-app-credentials")) {
         router.replace("/");
+      }
+
+      if (localStorage.getItem("trial-info")) {
+        router.replace("/extend-subscription");
       }
     }
   }, []);
 
   // console.log({ email, accessCode });
   // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
-
-  const extendSubscription = () => {
-    localStorage.setItem("userEmail", "kerab20471@invodua.com");
-    router.push("/extend-subscription");
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -220,7 +218,7 @@ const LoginPage = () => {
           </span> */}
           {/* <span
             onClick={() => {
-              router.push("/signup");
+              router.push("/signup?email=asdasd&access_code=87asd6");
             }}
           >
             {language.title === "nl" ? "Aanmelden" : "Signup"}

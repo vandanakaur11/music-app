@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { setSong, setSongs, setUser } from "../../store/musicReducer";
 import api from "./../../../services/api";
 import styles from "./ExtendSubscription.module.css";
 
 const postSelector = (state) => state.music;
 
 const ExtendSubscription = () => {
-  // console.log("VerifyPremiumCode >>>>>>>>");
+  console.log("ExtendSubscription >>>>>>>>");
 
   const { language, user } = useSelector(postSelector, shallowEqual);
 
@@ -20,10 +21,25 @@ const ExtendSubscription = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    console.log("user >>>>>>>>", user);
+
     if (typeof window !== "undefined") {
       // Perform localStorage action
-      if (!localStorage.getItem("trial-info")) {
-        router.push("/login");
+      if (user) {
+        router.replace("/");
+      } else if (!localStorage.getItem("trial-info")) {
+        router.replace("/");
+      } else if (!user && !localStorage.getItem("trial-info")) {
+        dispatch(setSong({}));
+        dispatch(setSongs([]));
+        dispatch(setUser(null));
+
+        localStorage.removeItem("songArray");
+        localStorage.removeItem("Expiring-Days-Api");
+        localStorage.removeItem("subscriptionSongDetails");
+        localStorage.removeItem("music-app-credentials");
+
+        router.replace("/login");
       }
     }
 
@@ -40,12 +56,6 @@ const ExtendSubscription = () => {
       setTimeout(() => {
         setError("");
       }, 3000);
-    }
-
-    if (trialInfo?.expired) {
-      router.replace("/extend-subscription");
-    } else {
-      router.replace("/");
     }
   }, [user]);
 

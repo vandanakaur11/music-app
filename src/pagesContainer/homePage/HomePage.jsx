@@ -39,20 +39,6 @@ const HomePage = ({ albums }) => {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  // console.log("homepage user >>>>>>>>>>>>", user);
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     route?.replace("/login");
-  //   }
-  // }, []);
-
-  // const [expireDays, setExpireDays] = useState(null);
-
-  // console.log(user)
-  // console.log("stateSubscription===>", subsData);
-  // console.log("stateExpiringDays", expireDays);
-
   const fetchSubscription = async () => {
     // console.log("subsID >>>>>>>>>>>>>", subsID);
 
@@ -84,71 +70,45 @@ const HomePage = ({ albums }) => {
     }
   };
 
-  if (user?.expiresIn) {
-  }
+  const fetchFavourites = async () => {
+    try {
+      let token;
+
+      if (typeof window !== "undefined") {
+        // Perform localStorage action
+        // ({ token } = JSON.parse(localStorage.getItem("music-app-credentials")));
+        token = JSON.parse(localStorage.getItem("music-app-credentials"));
+      }
+
+      const { data } = await api.get(`/api/getFavourites`, {
+        headers: {
+          authorization: `Bearer ${token?.token}`,
+        },
+      });
+
+      // tempArr.push(data?.favourites)
+
+      dispatch(setFavourites(data?.favourites));
+
+      // console.log("get favourites", data.favourites);
+    } catch (err) {
+      console.error("err >>>>>>>>>>", err);
+
+      setError(err?.response?.data);
+
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     let abortController = new AbortController();
 
-    // const newUser = JSON.parse(localStorage.getItem("music-app-credentials"));
-
-    // console.log("LoggedIn Users ===>", newUser);
-
-    // if (!newUser?.expiresIn) {
-    // console.log("subscription ID ====>",user.data.user.subscriptionID)
-
-    // if (!newUser?.expiresIn) {
-    if (user) {
-      fetchSubscription();
-    }
-    // }
-
-    // console.log(
-    //   "user?.data?.user?.email >>>>>>>>>>",
-    //   user?.data?.user?.email
-    // );
-
-    // fetchExpiringDays(user?.data?.user?.email);
-    // }
-
     if (!user) {
       route.replace("/login");
-    }
-
-    let token;
-
-    if (typeof window !== "undefined") {
-      // Perform localStorage action
-      // ({ token } = JSON.parse(localStorage.getItem("music-app-credentials")));
-      token = JSON.parse(localStorage.getItem("music-app-credentials"));
-    }
-    // console.log("token====>",token?.token)
-
-    const fetchFavourites = async () => {
-      try {
-        const { data } = await api.get(`/api/getFavourites`, {
-          headers: {
-            authorization: `Bearer ${token?.token}`,
-          },
-        });
-
-        // tempArr.push(data?.favourites)
-
-        dispatch(setFavourites(data?.favourites));
-
-        // console.log("get favourites", data.favourites);
-      } catch (err) {
-        console.error("err >>>>>>>>>>", err);
-
-        setError(err?.response?.data);
-
-        setTimeout(() => {
-          setError("");
-        }, 3000);
-      }
-    };
-
-    if (user) {
+    } else {
+      fetchSubscription();
       fetchFavourites();
     }
 
