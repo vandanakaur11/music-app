@@ -43,7 +43,7 @@ function Header() {
         err?.response?.data?.message
       );
 
-      console.log("header fetchExpiringDays user  >>>>>>>", user);
+      // console.log("header fetchExpiringDays user  >>>>>>>", user);
 
       if (
         err?.response?.data?.message === "Your trial period has been expired!"

@@ -14,9 +14,11 @@ const SignupPage = () => {
 
   const router = useRouter();
 
-  console.log("router.query", router.query);
+  // console.log("router.query", router.query);
 
   const { email: userEmail, access_code } = router.query;
+
+  // console.log("email: "+ userEmail , "access_code: "+access_code)
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,20 +30,22 @@ const SignupPage = () => {
   const { language, user } = useSelector(postSelector, shallowEqual);
 
   useEffect(() => {
-    // console.log("userEmail >>>>>>>>", userEmail);
-    // console.log("access_code >>>>>>>>", access_code);
-
     setEmail(userEmail !== "" ? userEmail : "");
     setVerificationCode(access_code !== "" ? access_code : "");
-  }, []);
+  }, [userEmail, access_code]);
 
-  useEffect(() => {
-    if (user) {
-      router.replace("/");
-    } else {
-      router.replace("/signup");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     router.replace("/");
+  //   } else {
+  //     router.replace("/signup");
+  //   }
+
+  //   // if(!user){
+  //   //   router.replace(`/signup?email=${email}&&access_code=${access_code}`)
+  //   // }
+
+  // }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -8,7 +8,7 @@ import styles from "./ExtendSubscription.module.css";
 const postSelector = (state) => state.music;
 
 const ExtendSubscription = () => {
-  console.log("ExtendSubscription >>>>>>>>");
+  // console.log("ExtendSubscription >>>>>>>>");
 
   const { language, user } = useSelector(postSelector, shallowEqual);
 
@@ -21,7 +21,7 @@ const ExtendSubscription = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    console.log("user >>>>>>>>", user);
+    // console.log("user >>>>>>>>", user);
 
     if (typeof window !== "undefined") {
       // Perform localStorage action
