@@ -29,7 +29,7 @@ function Header() {
   const [error, setError] = useState("");
 
   const getLocationInfo = async () => {
-    const { data } = await axios.get("http://api.db-ip.com/v2/free/self");
+    const { data } = await axios.get("https://api.db-ip.com/v2/free/self");
 
     if (data.countryCode === "NL") {
       dispatch(
