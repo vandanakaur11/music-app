@@ -112,7 +112,11 @@ const ExtendSubscription = () => {
 
   return (
     <div className={styles.container}>
-      <form className={styles.auth} onSubmit={(e) => handleSubmit(e)}>
+      <form
+        autoComplete="off"
+        className={styles.auth}
+        onSubmit={(e) => handleSubmit(e)}
+      >
         {error && <h3 className={styles.error}>{error}</h3>}
 
         <h1>

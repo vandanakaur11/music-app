@@ -109,7 +109,7 @@ const ResetPassword = ({ isSignIn }) => {
       : "I promise this account will only be used by me, and not to share any of the content with others.";
 
   return (
-    <form onSubmit={handleSubmit} className={classes.auth}>
+    <form autoComplete="off" onSubmit={handleSubmit} className={classes.auth}>
       <Head>
         <title>
           Mulder Music Streaming |{" "}

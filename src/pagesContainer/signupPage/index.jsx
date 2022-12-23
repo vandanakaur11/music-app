@@ -93,7 +93,11 @@ const SignupPage = () => {
       : " I promise this account will only be used by me, and not to share any of the content with others.";
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)} className={styles.auth}>
+    <form
+      autoComplete="off"
+      onSubmit={(e) => handleSubmit(e)}
+      className={styles.auth}
+    >
       <Head>
         <title>
           Mulder Music Streaming |{" "}

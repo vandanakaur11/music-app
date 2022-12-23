@@ -72,7 +72,11 @@ const PremiumCode = () => {
 
   return (
     <>
-      <form onSubmit={(e) => handleSubmit(e)} className={classes.auth}>
+      <form
+        autoComplete="off"
+        onSubmit={(e) => handleSubmit(e)}
+        className={classes.auth}
+      >
         <Head>
           <title>
             Mulder Music Streaming |{" "}

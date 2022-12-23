@@ -78,7 +78,7 @@ const VerifyPremiumCode = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={classes.auth}>
+    <form autoComplete="off" onSubmit={handleSubmit} className={classes.auth}>
       <Head>
         <title>Mulder Music Streaming | </title>
       </Head>
