@@ -12,14 +12,12 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setIsPlaying, setNextSong } from "../../store/musicReducer";
+import { setIsPlaying, setNextSong } from "./../../store/musicReducer";
 import classes from "./MusicPlayer.module.css";
 
 import { isMobile } from "react-device-detect";
 
 const postSelector = (state) => state.music;
-
-// let initialRef = 0;
 
 function MusicPlayer({
   currentTime,
@@ -36,7 +34,13 @@ function MusicPlayer({
     shallowEqual
   );
   // console.log(favouriteId)
+
   const dispatch = useDispatch();
+
+  const audioPlayer = useRef();
+  const animationRef = useRef();
+  const volumePreState = useRef();
+  const initialRef = useRef(0);
 
   // const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
@@ -49,11 +53,6 @@ function MusicPlayer({
   const handleIsLyrics = (event, newValue) => {
     setIsLyrics(newValue);
   };
-
-  const audioPlayer = useRef();
-  const animationRef = useRef();
-  const volumePreState = useRef();
-  const initialRef = useRef(0);
 
   // auto change song name while playing..
   useEffect(() => {
@@ -132,6 +131,7 @@ function MusicPlayer({
         axios.post(url, data);
       } catch (e) {
         // Nothing
+        console.error(e);
       }
       defaultHandler(true);
     }

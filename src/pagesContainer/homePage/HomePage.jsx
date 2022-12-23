@@ -17,6 +17,19 @@ const postSelector = (state) => state.music;
 const HomePage = ({ albums }) => {
   // console.log("HomePage >>>>>>>>>>>>>>");
 
+  const route = useRouter();
+
+  const { language, user } = useSelector(postSelector, shallowEqual);
+
+  const dispatch = useDispatch();
+
+  const [openAdd, setOpenAdd] = useState(false);
+  const [albumsOrder, setAlbumsOrder] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [subsData, setSubsData] = useState(null);
+  const [subscriptionAlbum, setSubscriptionAlbum] = useState(null);
+
   let albumArray = [];
 
   albums?.forEach((element) => {
@@ -27,27 +40,11 @@ const HomePage = ({ albums }) => {
 
   // console.log(albumArray)
 
-  const { language, user } = useSelector(postSelector, shallowEqual);
-
-  const [openAdd, setOpenAdd] = useState(false);
-  const [albumsOrder, setAlbumsOrder] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [subsData, setSubsData] = useState(null);
-  const [subscriptionAlbum, setSubscriptionAlbum] = useState(null);
-
-  const route = useRouter();
-  const dispatch = useDispatch();
-
   const fetchSubscription = async () => {
-    // console.log("subsID >>>>>>>>>>>>>", subsID);
-
     try {
       const { data } = await api.get(
         `/admin/subscriptions/${user.subscriptionID}`
       );
-
-      // console.log("HomePage subscription data >>>>>>>>", data);
 
       if (data) {
         setSubsData(data);
@@ -60,7 +57,10 @@ const HomePage = ({ albums }) => {
         setSubscriptionAlbum(data?.data?.subscription?.songDetail);
       }
     } catch (err) {
-      console.error("err >>>>>>>>>>", err);
+      console.error(
+        "err?.response?.data?.message >>>>>>>>>>",
+        err?.response?.data?.message
+      );
 
       setError(err?.response?.data?.message);
 
@@ -92,7 +92,7 @@ const HomePage = ({ albums }) => {
 
       // console.log("get favourites", data.favourites);
     } catch (err) {
-      console.error("err >>>>>>>>>>", err);
+      console.error("err?.response?.data >>>>>>>>>>", err?.response?.data);
 
       setError(err?.response?.data);
 

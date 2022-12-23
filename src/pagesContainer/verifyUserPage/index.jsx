@@ -1,17 +1,17 @@
-import { useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import classes from "./VerifyUserPage.module.css";
-import { useRouter } from "next/router";
 
 const postSelector = (state) => state.music;
 
 const VerifyUserPage = () => {
-  const { language, user } = useSelector(postSelector, shallowEqual);
-  const router=useRouter()
+  const router = useRouter();
 
-  // console.log("verified--user==>",user)
+  const { language, user } = useSelector(postSelector, shallowEqual);
+
   const successTextEng = "Check your email for verification";
   const successTextNl = "Controleer uw e-mail voor verificatie";
 

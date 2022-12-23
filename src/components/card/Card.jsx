@@ -1,15 +1,12 @@
 import { Lock } from "@material-ui/icons";
-import { ConstructionOutlined } from "@mui/icons-material";
 import Alert from "@mui/material/Alert";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import { setAlbum } from "../../store/musicReducer";
 import classes from "./Card.module.css";
-
 // import axios from "axios";
-// import { setSongs, setSong } from "../../store/musicReducer";
+// import { setSongs, setSong } from "./../../store/musicReducer";
 
 const postSelector = (state) => state.music;
 
@@ -18,15 +15,9 @@ const Card = forwardRef(
     { subscriptionAlbum, album, url, index, trial, disableFetch, setLoading },
     ref
   ) => {
-    // console.log("index >>>>>>>>>>>>>>", index);
-    // console.log("subscriptionAlbum >>>>>>>>>>>>>>", subscriptionAlbum);
-    // console.log("album >>>>>>>>>>>>>>", album);
-    // console.log("url >>>>>>>>>>>>>>", url);
-    // console.log("trial >>>>>>>>>>>>>>", trial);
-    // console.log("disableFetch >>>>>>>>>>>>>>", disableFetch);
-    // console.log("setLoading >>>>>>>>>>>>>>", setLoading);
-
     // console.log("Card component >>>>>>>>");
+
+    const route = useRouter();
 
     const { user } = useSelector(postSelector, shallowEqual);
 
@@ -38,8 +29,6 @@ const Card = forwardRef(
     // const [liked, setLiked] = useState(false);
     // const [trial, setTrial] = useState(false)
     // const [loading, setLoading] = useState(false);
-
-    const route = useRouter();
 
     let albumName = false;
 
@@ -121,7 +110,7 @@ const Card = forwardRef(
       // dispatch(setSong(data[0]));
       // route.push(`/album/${album?.Album_Name}`);
       // } catch (err) {
-      //     console.log({ err });
+      //     console.error(err);
       // }
     }
 

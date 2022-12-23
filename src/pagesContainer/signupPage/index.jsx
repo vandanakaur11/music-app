@@ -14,11 +14,7 @@ const SignupPage = () => {
 
   const router = useRouter();
 
-  // console.log("router.query", router.query);
-
   const { email: userEmail, access_code } = router.query;
-
-  // console.log("email: "+ userEmail , "access_code: "+access_code)
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,11 +55,7 @@ const SignupPage = () => {
         code: verificationCode,
       };
 
-      // console.log("payload >>>>>>>>>", payload);
-
       const { data } = await api.post("/api/signup", payload);
-
-      // console.log("data >>>>>>>>", data);
 
       if (data) {
         if (typeof window !== "undefined") {
@@ -71,8 +63,6 @@ const SignupPage = () => {
 
           localStorage.setItem("success", data?.message);
         }
-
-        // dispatch(setUser(data));
 
         setLoading(false);
 

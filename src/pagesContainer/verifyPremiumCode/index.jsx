@@ -2,9 +2,9 @@ import { Button } from "@material-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
-import api from "../../../services/api";
+import api from "./../../../services/api";
 import classes from "./VerifyPremiumCode.module.css";
 
 const postSelector = (state) => state.music;
@@ -12,12 +12,9 @@ const postSelector = (state) => state.music;
 const VerifyPremiumCode = () => {
   // console.log("VerifyPremiumCode >>>>>>>>");
 
-  const { language, user } = useSelector(postSelector, shallowEqual);
-
-  // console.log("user===>", user);
-
   const router = useRouter();
-  const dispatch = useDispatch();
+
+  const { language } = useSelector(postSelector, shallowEqual);
 
   const [email, setEmail] = useState("");
   const [premiumCode, setPremiumCode] = useState("");
@@ -30,9 +27,6 @@ const VerifyPremiumCode = () => {
       setEmail(localStorage.getItem("verifyUserEmail"));
     }
   }, []);
-
-  // console.log({ email, resetPasswordVerificationCode });
-  // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -47,8 +41,6 @@ const VerifyPremiumCode = () => {
 
       // console.log("endDate >>>>>>>>", endDate.toISOString());
 
-      // setSubscriptionEndDate(endDate.toISOString());
-
       const body = {
         code: premiumCode,
         subscriptionID: "635bd8fdcb397b3a044d9867",
@@ -56,8 +48,6 @@ const VerifyPremiumCode = () => {
       };
 
       let { data } = await api.patch(`/api/premium-code/${email}`, body);
-
-      // console.log("data >>>>>>>>>>>>>", data);
 
       if (data) {
         if (typeof window !== "undefined") {
@@ -74,10 +64,10 @@ const VerifyPremiumCode = () => {
     } catch (err) {
       setLoading(false);
 
-      // console.error(
-      //   "err.response.data.message >>>>>>>>>>",
-      //   err.response.data.message
-      // );
+      console.error(
+        "err?.response?.data?.message >>>>>>>>>>",
+        err?.response?.data?.message
+      );
 
       setError(err?.response?.data?.message);
 
@@ -86,8 +76,6 @@ const VerifyPremiumCode = () => {
       }, 3000);
     }
   };
-
-  
 
   return (
     <form onSubmit={handleSubmit} className={classes.auth}>
@@ -98,6 +86,7 @@ const VerifyPremiumCode = () => {
       <h1>{language.title === "nl" ? "Premium-code" : "Premium Code"}</h1>
 
       {/* {loading && <h3>Loading..</h3>} */}
+
       {loading && (
         <div className={classes.loading}>
           <h1 style={{ fontSize: "2.5rem" }}>Loading...</h1>
@@ -137,7 +126,6 @@ const VerifyPremiumCode = () => {
           top: "50%",
           right: "44vw",
           left: "44vw",
-
           // left: 0,
           // width: "100%",
           // height: "100%",

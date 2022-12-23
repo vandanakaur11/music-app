@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import api from "./../../../services/api";
 import classes from "./ResetPassword.module.css";
@@ -15,16 +15,12 @@ const ResetPassword = () => {
   const { language } = useSelector(postSelector, shallowEqual);
 
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const [resetPasswordVerificationCode, setResetPasswordVerificationCode] =
     useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  // console.log({ email, resetPasswordVerificationCode });
-  // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -62,10 +58,10 @@ const ResetPassword = () => {
     } catch (err) {
       setLoading(false);
 
-      // console.error(
-      //   "err.response.data.message >>>>>>>>>>",
-      //   err.response.data.message
-      // );
+      console.error(
+        "err?.response?.data?.message >>>>>>>>>>",
+        err?.response?.data?.message
+      );
 
       setError(err?.response?.data?.message);
 
@@ -73,30 +69,6 @@ const ResetPassword = () => {
         setError("");
       }, 3000);
     }
-
-    // const payload = { email, password, code: resetPasswordVerificationCode };
-
-    // const url = `${process.env.base_url}/updatePassword`;
-
-    // try {
-    //   const { data } = await axios.post(url, payload);
-
-    //   console.log(data);
-
-    //   setLoading(false);
-
-    //   localStorage.setItem("music-app-credentials", JSON.stringify(data));
-    //   dispatch(setUser(data));
-
-    // } catch (err) {
-    //   setLoading(false);
-    //   console.log({ err });
-    //   setError(err?.response?.data);
-
-    //   setTimeout(() => {
-    //     setError("");
-    //   }, 3000);
-    // }
   };
 
   return (
@@ -122,8 +94,9 @@ const ResetPassword = () => {
       {error && <h3 style={{ color: "red" }}>{error}</h3>}
 
       <p>
-        You just received a code via email. Please enter it below and set your
-        desired password.
+        {language.title === "nl"
+          ? "Je hebt zojuist een code per e-mail ontvangen. Voer het hieronder in en stel het gewenste wachtwoord in."
+          : "You just received a code via email. Please enter it below and set your desired password."}
       </p>
 
       <div className={classes.input}>

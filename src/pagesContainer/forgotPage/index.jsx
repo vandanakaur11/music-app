@@ -1,9 +1,8 @@
 import { Button } from "@material-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import ClipLoader from "react-spinners/ClipLoader";
 import api from "./../../../services/api";
 import classes from "./ForgotPage.module.css";
 
@@ -12,9 +11,10 @@ const postSelector = (state) => state.music;
 const ForgotPage = () => {
   // console.log("Auth ForgotPage >>>>>>>>");
 
-  const { language,user } = useSelector(postSelector, shallowEqual);
-
   const router = useRouter();
+
+  const { language, user } = useSelector(postSelector, shallowEqual);
+
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -26,17 +26,12 @@ const ForgotPage = () => {
 
     e.preventDefault();
 
-    // const payload = { email };
     try {
       const body = {
         email,
       };
 
       let { data } = await api.post(`/api/forgot-password`, body);
-
-      // console.log("api response data >>>>>>>>>>>", data);
-      // console.log("api response data?.data >>>>>>>>>>>", data?.data);
-      // console.log("api response data?.data?.id >>>>>>>>>>>", data?.data?.id);
 
       if (data) {
         if (typeof window !== "undefined") {
@@ -64,14 +59,13 @@ const ForgotPage = () => {
     }
   };
 
-  useEffect(()=>{
-    if(user){
-      router.replace("/")
+  useEffect(() => {
+    if (user) {
+      router.replace("/");
+    } else {
+      router.replace("/forgot");
     }
-    else{
-      router.replace("/forgot")
-    }
-  },[user])
+  }, [user]);
 
   return (
     <form onSubmit={(e) => handleSubmit(e)} className={classes.auth}>
@@ -89,6 +83,7 @@ const ForgotPage = () => {
       </h1>
 
       {/* {loading && <h3>Loading..</h3>} */}
+
       {loading && (
         <div className={classes.loading}>
           <h1 style={{ fontSize: "2.5rem" }}>Loading...</h1>

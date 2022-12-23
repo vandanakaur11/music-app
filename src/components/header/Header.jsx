@@ -1,28 +1,47 @@
 import { Drawer, List, ListItem } from "@material-ui/core";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setSong, setSongs, setUser } from "../../store/musicReducer";
-import SideDrawer from "../sideDrawer/SideDrawer";
 import api from "./../../../services/api";
+import {
+  setLanguageMode,
+  setSong,
+  setSongs,
+  setUser,
+} from "./../../store/musicReducer";
+import SideDrawer from "./../sideDrawer/SideDrawer";
 import classes from "./Header.module.css";
 
 const postSelector = (state) => state.music;
 
 function Header() {
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const { user, language } = useSelector(postSelector, shallowEqual);
+
+  const dispatch = useDispatch();
 
   const [userInfo, setUserInfo] = useState(user);
   const [expireDays, setExpireDays] = useState(null);
   const [error, setError] = useState("");
 
-  // let expiringDays;
-  // console.log("stateExpiringDays", expireDays);
+  const getLocationInfo = async () => {
+    const { data } = await axios.get("http://api.db-ip.com/v2/free/self");
+
+    if (data.countryCode === "NL") {
+      dispatch(
+        setLanguageMode({
+          title: "nl",
+          src: "nl-2.jpg",
+        })
+      );
+
+      router.push(`${router.route}?lang=nl`);
+    }
+  };
 
   const fetchExpiringDays = async () => {
     try {
@@ -42,8 +61,6 @@ function Header() {
         "err?.response?.data?.message >>>>>>>>>>",
         err?.response?.data?.message
       );
-
-      // console.log("header fetchExpiringDays user  >>>>>>>", user);
 
       if (
         err?.response?.data?.message === "Your trial period has been expired!"
@@ -124,6 +141,8 @@ function Header() {
   const [checkCredentials, setCheckCredentials] = useState(null);
 
   useEffect(() => {
+    getLocationInfo();
+
     if (window.innerWidth < 992) {
       setShowSidebar(true);
     }
@@ -219,6 +238,7 @@ function Header() {
     //     console.log(res)
     // }
     // catch(err){
+    // console.error(err);
     // }
   };
 

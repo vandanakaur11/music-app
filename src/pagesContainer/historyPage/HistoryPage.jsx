@@ -12,8 +12,10 @@ const postSelector = (state) => state.music;
 const HistoryPage = ({ userEmail }) => {
   // console.log("HistoryPage >>>>>>>>");
 
-  const { user } = useSelector(postSelector, shallowEqual);
   const route = useRouter();
+
+  const { user } = useSelector(postSelector, shallowEqual);
+
   const [history, setHistory] = useState([]);
 
   useEffect(async () => {

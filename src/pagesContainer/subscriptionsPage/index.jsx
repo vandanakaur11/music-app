@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Modal,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -14,7 +6,6 @@ import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import PAYPALIMAGE from "./../../../public/images/pay_pal.svg";
 import api from "./../../../services/api";
-import Cliploader from "react-spinners/ClipLoader";
 import styles from "./Subscriptions.module.css";
 
 const postSelector = (state) => state.music;
@@ -38,39 +29,6 @@ const SubscriptionsPage = () => {
   const router = useRouter();
 
   const [subscriptions, setSubscriptions] = useState(null);
-  
-
-  const fetchSubscriptions = async () => {
-    try {
-      const { data } = await api.get("/admin/subscriptions");
-
-      // console.log("data >>>>>>>>>>", data.data.subscriptions);
-
-      if (data) {
-        const allSubscriptionsExceptOne = data?.data?.subscriptions.filter(
-          (subscription) => subscription.code !== "PREMIUM"
-        );
-
-        // console.log("allSubscriptionsExceptOne", allSubscriptionsExceptOne);
-
-        setSubscriptions(allSubscriptionsExceptOne);
-        // setSubscriptions(data.data.subscriptions);
-      }
-    } catch (err) {
-      console.error("err >>>>>>>>", err);
-    }
-  };
-
-  // console.log("subscriptions >>>>>>>>>>", subscriptions);
-
-  useEffect(() => {
-    fetchSubscriptions();
-  }, []);
-
-  // console.log("ALBUMIMAGE >>>>>>", ALBUMIMAGE);
-  // console.log("MELODYIMAGE >>>>>>", MELODYIMAGE);
-  // console.log("PRICEIMAGE >>>>>>", PRICEIMAGE);
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -78,6 +36,26 @@ const SubscriptionsPage = () => {
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(false);
   const [paypalURL, setPaypalURL] = useState("");
+
+  const fetchSubscriptions = async () => {
+    try {
+      const { data } = await api.get("/admin/subscriptions");
+
+      if (data) {
+        const allSubscriptionsExceptOne = data?.data?.subscriptions.filter(
+          (subscription) => subscription.code !== "PREMIUM"
+        );
+
+        setSubscriptions(allSubscriptionsExceptOne);
+      }
+    } catch (err) {
+      console.error("err >>>>>>>>", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
 
   const handleClick = async (price, subscriptionId) => {
     // console.log("price >>>>>>>>>>>", price);
@@ -115,7 +93,6 @@ const SubscriptionsPage = () => {
 
       try {
         const { data } = await api.get(`/api/pay?price=${price}`);
-        // console.log("data >>>>>>>>>>>", data);
 
         if (data) {
           setPaypalURL(data.link);
@@ -188,7 +165,7 @@ const SubscriptionsPage = () => {
           ))
         ) : (
           <div className={styles.loading}>
-            <h1 >Loading...</h1>
+            <h1>Loading...</h1>
           </div>
         )}
       </div>

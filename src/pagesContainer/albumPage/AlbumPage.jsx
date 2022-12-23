@@ -24,15 +24,19 @@ const postSelector = (state) => state.music;
 const AlbumPage = ({ songs, album }) => {
   // console.log("AlbumPage Component >>>>>>>>");
 
+  const route = useRouter();
+
   const { song, language, user, favouriteId } = useSelector(
     postSelector,
     shallowEqual
   );
 
-  // console.log("postSelector >>>>>>>>>", postSelector);
-
-  const route = useRouter();
   const dispatch = useDispatch();
+
+  // const audio = useRef();
+  const audioPlayer = useRef();
+  // const audioContainer = useRef();
+
   const [currentTime, setCurrentTime] = useState(0);
   const [songName, setSongName] = useState("");
   const [albumName, setAlbumName] = useState("");
@@ -47,16 +51,8 @@ const AlbumPage = ({ songs, album }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [loadingForAlbum, setLoadingForAlbum] = useState(false);
-
   const [songPlay, setSongPlay] = useState(false);
-  // const [lockedSongs,setLockedSongs]=useState(false)
-
-  // const audio = useRef();
-  const audioPlayer = useRef();
-  // const audioContainer = useRef();
-
-  // seperate each song file
-  // console.log(pic)
+  const [lockedSongs, setLockedSongs] = useState(false);
 
   const songFileArray = songs.map((ele, ind) => {
     let fileName = process.env.media_url.concat(ele.Song_File);
@@ -93,19 +89,12 @@ const AlbumPage = ({ songs, album }) => {
 
       setSongName(songArray[0].Song_Name);
       setAlbumName(songArray[0].Album_Name);
-
-      // console.log(
-      //   "img",
-      //   process.env.media_url.concat(songArray[0].Album_Image)
-      // );
-
       setPic(process.env.media_url.concat(songArray[0].Album_Image));
       setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
     }
   };
 
   useEffect(() => {
-    // console.log(`${process.env.media_url}/${songArray[0]?.Song_File}`)
     setSingleSong(`${process.env.media_url}/${songArray[0]?.Song_File}`);
     setSongPlay(true);
 

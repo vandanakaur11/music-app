@@ -1,4 +1,4 @@
-import Footer from "../../src/components/footer";
+import Footer from "./../../src/components/footer";
 import ExtendSubscription from "./../../src/pagesContainer/extendSubscriptionpage";
 
 const index = () => {

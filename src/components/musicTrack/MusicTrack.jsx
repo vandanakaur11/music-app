@@ -6,8 +6,8 @@ import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import React, { useCallback, useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setFavourites, setSong, setSongs } from "./../../store/musicReducer";
 import api from "./../../../services/api";
+import { setFavourites, setSong, setSongs } from "./../../store/musicReducer";
 import classes from "./MusicTrack.module.css";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -27,22 +27,10 @@ const MusicTracker = ({
   setSongArray,
   setSingleSong,
 }) => {
-  // console.log("MusicTracker albumSong >>>>>>>>>>", albumSong);
-  // console.log("MusicTracker songs", songs);
-  // console.log("MusicTracker order", order);
-  // console.log("MusicTracker currentTime", currentTime);
-  // console.log("MusicTracker setCurrentTime", setCurrentTime);
-  // console.log("MusicTracker trial", trial);
-  // console.log("MusicTracker setSongName", setSongName);
-  // console.log("MusicTracker setSongArray", setSongArray);
-  // console.log("MusicTracker setSingleSong", setSingleSong);
-
   const { song, user, favourites, favouriteId } = useSelector(
     postSelector,
     shallowEqual
   );
-
-  // console.log("favourites >>>>>>>", favourites);
 
   const dispatch = useDispatch();
 
@@ -50,8 +38,8 @@ const MusicTracker = ({
   const [locked, setLocked] = useState(false);
   const [liked, setLiked] = useState(false);
   const [open, setOpen] = useState(false);
-  // const [eachAlbumSongs,setEachAlbumSongs]=useState(null)
   const [subscriptionSongs, setSubscriptionSongs] = useState(null);
+  // const [eachAlbumSongs,setEachAlbumSongs]=useState(null)
 
   // useEffect(()=>{
   //     if (typeof window !== "undefined") {

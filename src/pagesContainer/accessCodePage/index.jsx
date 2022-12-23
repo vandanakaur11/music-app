@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../store/musicReducer";
+import { setUser } from "./../../store/musicReducer";
 import classes from "./AccessCodePage.module.css";
 
 const postSelector = (state) => state.music;
@@ -12,18 +12,16 @@ const postSelector = (state) => state.music;
 const AccessCodePage = () => {
   // console.log("Auth LoginPage >>>>>>>>");
 
+  const router = useRouter();
+
   const { language } = useSelector(postSelector, shallowEqual);
 
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  // console.log({ email, accessCode });
-  // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -35,8 +33,6 @@ const AccessCodePage = () => {
 
     try {
       const { data } = await axios.post(url, payload);
-
-      // console.log(data);
 
       setLoading(false);
 
@@ -51,7 +47,7 @@ const AccessCodePage = () => {
     } catch (err) {
       setLoading(false);
 
-      // console.log({ err });
+      console.error(err?.response?.data);
 
       setError(err?.response?.data);
 

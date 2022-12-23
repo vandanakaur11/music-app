@@ -13,9 +13,10 @@ const postSelector = (state) => state.music;
 const LoginPage = () => {
   // console.log("LoginPage >>>>>>>>");
 
+  const router = useRouter();
+
   const { language } = useSelector(postSelector, shallowEqual);
 
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -64,14 +65,7 @@ const LoginPage = () => {
     try {
       const payload = { email, password };
 
-      // console.log("payload >>>>>>>>>>>", payload);
-
       const { data } = await api.post("/api/signin", payload);
-
-      // console.log("data >>>>>>>>>>>", data);
-      // console.log("data?.data?.user >>>>>>>>>>>", data?.data?.user);
-
-      // router.replace("/login", "/");
 
       if (typeof window !== "undefined") {
         // Perform localStorage action

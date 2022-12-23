@@ -10,9 +10,10 @@ const postSelector = (state) => state.music;
 const ExtendSubscription = () => {
   // console.log("ExtendSubscription >>>>>>>>");
 
+  const router = useRouter();
+
   const { language, user } = useSelector(postSelector, shallowEqual);
 
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -59,9 +60,6 @@ const ExtendSubscription = () => {
     }
   }, [user]);
 
-  // console.log({ email, resetPasswordVerificationCode });
-  // console.log(router.query.email ? router.query.email : "", router.query.access_code ? router.query.access_code : "");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -94,14 +92,10 @@ const ExtendSubscription = () => {
     } catch (err) {
       setLoading(false);
 
-      console.error("err >>>>>>>>>>>>", err);
-
       console.error(
         "err?.response?.data?.message >>>>>>>>>>",
         err?.response?.data?.message
       );
-
-      setError("");
 
       setError(err?.response?.data?.message);
 
@@ -109,6 +103,11 @@ const ExtendSubscription = () => {
         setError("");
       }, 3000);
     }
+  };
+
+  const handleNavigation = () => {
+    localStorage.removeItem("trial-info");
+    router.push("/login");
   };
 
   return (
@@ -144,6 +143,14 @@ const ExtendSubscription = () => {
         <button>
           <i>Pay</i> <span>Pal</span>
         </button>
+        <p style={{ margin: "1rem 0", fontSize: "1rem" }}>
+          <span
+            style={{ textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => handleNavigation()}
+          >
+            {language.title === "nl" ? "Terug naar Inloggen" : "Back to Login"}
+          </span>
+        </p>
       </form>
     </div>
   );

@@ -1,5 +1,4 @@
-import React from "react";
-import Card from "../../card/Card";
+import Card from "./../../card/Card";
 import classes from "./Banner.module.css";
 // import Slider from "react-slick";
 

@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import api from "./../../../services/api";
 import classes from "./PremiumCode.module.css";
 
@@ -11,10 +11,9 @@ const postSelector = (state) => state.music;
 const PremiumCode = () => {
   // console.log("PremiumCode >>>>>>>>");
 
-  const { language, user } = useSelector(postSelector, shallowEqual);
-
   const router = useRouter();
-  const dispatch = useDispatch();
+
+  const { language, user } = useSelector(postSelector, shallowEqual);
 
   const [email, setEmail] = useState("");
   const [premiumCode, setPremiumCode] = useState("");

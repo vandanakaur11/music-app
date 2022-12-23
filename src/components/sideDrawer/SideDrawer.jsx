@@ -1,12 +1,13 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import * as React from "react";
-import { useState } from "react";
+import {
+  Box,
+  Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import { Fragment, memo, useState } from "react";
 // import classes from "./SideDrawer.module.css";
 // import classes from "./SideDrawer.module.css";
 import { makeStyles } from "@material-ui/core";
@@ -14,7 +15,9 @@ import { MusicNote } from "@material-ui/icons";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import { useRouter } from "next/router";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setFavouriteId } from "../../store/musicReducer";
+import { setFavouriteId } from "./../../store/musicReducer";
+
+const postSelector = (state) => state.music;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -93,21 +96,17 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff !important",
   },
 }));
-const postSelector = (state) => state.music;
 
 const TemporaryDrawer = () => {
   // console.log("Side Drawer component >>>>>>>>");
-
-  const dispatch = useDispatch();
-
-  const { user, favourites } = useSelector(postSelector, shallowEqual);
-
-  // console.log(favourites)
-
   const route = useRouter();
   const classes = useStyles();
 
-  const [state, setState] = React.useState({
+  const { user, favourites } = useSelector(postSelector, shallowEqual);
+
+  const dispatch = useDispatch();
+
+  const [state, setState] = useState({
     // top: false,
     // left: false,
     // bottom: false,
@@ -193,7 +192,7 @@ const TemporaryDrawer = () => {
   return (
     <div className={classes.mainWrap}>
       {["right"].map((anchor) => (
-        <React.Fragment key={anchor}>
+        <Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>
             <div className={classes.playlistWrap}>
               <div className={classes.playlistText}>Playlist</div>
@@ -210,9 +209,9 @@ const TemporaryDrawer = () => {
           >
             {list(anchor)}
           </Drawer>
-        </React.Fragment>
+        </Fragment>
       ))}
     </div>
   );
 };
-export default React.memo(TemporaryDrawer);
+export default memo(TemporaryDrawer);

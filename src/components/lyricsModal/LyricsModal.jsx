@@ -1,3 +1,5 @@
+/* ----------------------------------- Previous Lyrics Modal Design ----------------------------------- */
+
 // import { withStyles } from "@material-ui/styles";
 // import { Box, Modal, Typography } from "@mui/material";
 // import * as React from "react";
@@ -90,6 +92,8 @@
 // };
 
 // export default withStyles(modalStyle)(LyricsModal);
+
+/* ----------------------------------- New Lyrics Modal Design ----------------------------------- */
 
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -198,6 +202,7 @@ const LyricsDialogs = ({ setOpen, open, handleClose, handleOpen, lyrics }) => {
   const lyricsBrakeByBackSlahN = lyricsInString
     .replace(/"/g, "")
     .split("\\r\\n");
+
   // console.log("lyricsBrakeByBackSlahN >>>>>>>>>>", lyricsBrakeByBackSlahN);
 
   return (

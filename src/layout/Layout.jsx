@@ -2,16 +2,18 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import Header from "../components/header/Header";
 import { setLanguageMode, setUser } from "../store/musicReducer";
+import Header from "./../components/header/Header";
 import classes from "./Layout.module.css";
 
 const postSelector = (state) => state.music;
+
 function Layout({ children }) {
-  const { language,user } = useSelector(postSelector, shallowEqual);
+  const router = useRouter();
+
+  const { language, user } = useSelector(postSelector, shallowEqual);
 
   const dispatch = useDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     if (router.query.lang) {

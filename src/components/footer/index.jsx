@@ -8,14 +8,27 @@ import {
   setSong,
   setSongs,
   setUser,
-} from "../../store/musicReducer";
+} from "./../../store/musicReducer";
 import classes from "./Footer.module.css";
 
 const postSelector = (state) => state.music;
 
+const languages = [
+  {
+    title: "nl",
+    src: "nl-2.jpg",
+  },
+  {
+    title: "eng",
+    src: "usa-2.jpg",
+  },
+];
+
 const Footer = () => {
-  const { user, language } = useSelector(postSelector, shallowEqual);
   const router = useRouter();
+
+  const { user, language } = useSelector(postSelector, shallowEqual);
+
   const dispatch = useDispatch();
 
   function handleLogout() {
@@ -62,6 +75,7 @@ const Footer = () => {
       }
     } catch (e) {
       // console.log(e, "- Footer");
+      console.error(e);
     }
   }, []);
 
@@ -125,14 +139,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-const languages = [
-  {
-    title: "nl",
-    src: "nl-2.jpg",
-  },
-  {
-    title: "eng",
-    src: "usa-2.jpg",
-  },
-];

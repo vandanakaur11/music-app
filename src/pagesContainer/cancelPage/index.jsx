@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
-import api from "../../../services/api";
 import styles from "./../signupPage/Signup.module.css";
 
 const postSelector = (state) => state.music;
@@ -10,9 +9,9 @@ const postSelector = (state) => state.music;
 const SuccessPage = () => {
   // console.log("Auth SuccessPage >>>>>>>>");
 
-  const { language } = useSelector(postSelector, shallowEqual);
-
   const router = useRouter();
+
+  const { language } = useSelector(postSelector, shallowEqual);
 
   useEffect(() => {
     setTimeout(() => {
