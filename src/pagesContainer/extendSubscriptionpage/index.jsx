@@ -115,18 +115,34 @@ const ExtendSubscription = () => {
       <form className={styles.auth} onSubmit={(e) => handleSubmit(e)}>
         {error && <h3 className={styles.error}>{error}</h3>}
 
-        <h1>Extend Subscription</h1>
-        <span>Option 1: Enter Purchased Access Code</span>
+        <h1>
+          {language.title === "nl"
+            ? "Abonnement verlengen"
+            : "Extend Subscription"}
+        </h1>
+        <span>
+          {language.title === "nl"
+            ? "Optie 1: Voer de gekochte toegangscode in"
+            : "Option 1: Enter Purchased Access Code"}
+        </span>
         <p>
-          You can purchase a new access code on{" "}
-          <a href="https://www.ianmulder.us">www.ianmulder.us</a> and use it to
-          extend your subscription 12 months.
+          {language.title === "nl"
+            ? "U kunt een nieuwe toegangscode kopen op"
+            : "You can purchase a new access code on"}{" "}
+          <a href="https://www.ianmulder.us">www.ianmulder.us</a>
+          {language.title === "nl"
+            ? "en gebruik het om uw abonnement met 12 maanden te verlengen."
+            : "and use it to extend your subscription 12 months."}
         </p>
         <div className={`${styles.inputContainer}`}>
           <input
             type="text"
             name="code"
-            placeholder="Enter Access Code"
+            placeholder={
+              language.title === "nl"
+                ? "Voer toegangscode in"
+                : "Enter Access Code"
+            }
             onChange={(e) => {
               setCode(e.target.value);
             }}
@@ -135,10 +151,16 @@ const ExtendSubscription = () => {
             minLength={7}
             maxLength={10}
           />
-          <button type="submit">Submit</button>
+          <button type="submit">
+            {language.title === "nl" ? "Indienen" : "Submit"}
+          </button>
         </div>
         <hr />
-        <span>Option 2: Pay via PayPal</span>
+        <span>
+          {language.title === "nl"
+            ? "Optie 2: Betaal via PayPal"
+            : "Option 2: Pay via PayPal"}
+        </span>
         <strong>$23.99</strong>
         <button>
           <i>Pay</i> <span>Pal</span>
