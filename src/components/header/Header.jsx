@@ -40,6 +40,8 @@ function Header() {
       );
 
       router.push(`${router.route}?lang=nl`);
+    } else {
+      router.push(router.route);
     }
   };
 
